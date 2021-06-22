@@ -24,7 +24,7 @@ public class Address {
     @Column(nullable = false)
     private String street;
     @Column(nullable = false)
-    private int house_number;
+    private int houseNumber;
 
     private LocalDateTime created;
     private LocalDateTime updated;

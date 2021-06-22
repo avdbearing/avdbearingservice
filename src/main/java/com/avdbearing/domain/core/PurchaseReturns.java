@@ -2,7 +2,7 @@ package com.avdbearing.domain.core;
 
 
 import com.avdbearing.domain.Client;
-import com.avdbearing.domain.Enum.OrderStatus;
+import com.avdbearing.domain.Contact;
 import com.avdbearing.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,31 +19,29 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
-public class Order {
-
+public class PurchaseReturns {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long id;
-
     @OneToOne
     private Client client;
+    @OneToOne
+    private User manager;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+
+    @Column(nullable = false)
+    private boolean packaged;
+
+    @Column(nullable = false)
+    private long orderNumber;
+
 
     @OneToMany
-    private List<Payment> payments = new ArrayList<>();
-
-
-    @ElementCollection
-    @CollectionTable(name = "part_amount")
-    @Column(name = "amount")
-    private Map<Part, Integer> parts = new HashMap<>();
+    private List<Part> parts = new ArrayList<>();
 
     private LocalDateTime sold;
-
+    private LocalDateTime returned;
 
 }

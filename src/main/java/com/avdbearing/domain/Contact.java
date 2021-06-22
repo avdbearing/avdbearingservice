@@ -19,15 +19,11 @@ public class Contact {
 
     private int id;
     @Column(nullable = false)
-    private String first_name;
+    private String firstName;
     @Column(nullable = false)
-    private String second_name;
+    private String secondName;
     @Column(nullable = false, unique = true)
     private String phone;
-    @Column(nullable = false)
-    private String name_company;
-    @Column(nullable = false)
-    private String site;
 
     @OneToOne
     private Address address;

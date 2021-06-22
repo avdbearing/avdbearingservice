@@ -7,21 +7,23 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Table(name = "sizes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Size {
+public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
-    @Column(name = "innerSize")
-    private double inner;
-    @Column(name = "outerSize")
-    private double outer;
-    private double width;
+
+    @Column(nullable = false)
+    private long orderId;
+
+    @Column(nullable = false)
+    private double paymentSum;
+
 
 
 }

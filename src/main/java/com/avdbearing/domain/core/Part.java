@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +37,14 @@ public class Part {
     private PartType type;
     @OneToOne
     private Supplier supplier;
+    @Column(nullable = false)
+    private boolean isNew;
+
+
+    @ElementCollection
+    @CollectionTable(name = "data")
+    @Column(name = "price")
+    private Map<LocalDateTime, Double> costDynamic = new LinkedHashMap<>();
 
 
     private LocalDateTime created;

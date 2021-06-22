@@ -6,22 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Table(name = "sizes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Size {
+public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
-    @Column(name = "innerSize")
-    private double inner;
-    @Column(name = "outerSize")
-    private double outer;
-    private double width;
+
+    @ElementCollection
+    @CollectionTable(name = "part_amount")
+    @Column(name = "amount")
+    private Map<Part, Integer> parts = new HashMap<>();
 
 
 }

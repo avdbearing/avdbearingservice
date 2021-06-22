@@ -25,11 +25,11 @@ public class PaymentInfo {
     @Column(nullable = false)
     private int mfo;
     @Column(nullable = false)
-    private String card_number;
+    private String cardNumber;
     @Column(nullable = false)
     private String edrnoy;
     @Column(nullable = false)
-    private String bank_name;
+    private String bankName;
 
     private LocalDateTime created;
     private LocalDateTime updated;
