@@ -16,7 +16,7 @@ public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id;
+    private long id;
     @Column(name = "innerSize")
     private double inner;
     @Column(name = "outerSize")

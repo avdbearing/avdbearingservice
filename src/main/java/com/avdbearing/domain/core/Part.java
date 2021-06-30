@@ -22,7 +22,7 @@ public class Part {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id;
+    private long id;
     @OneToOne
     private Size size;
     @Column(nullable = false)
