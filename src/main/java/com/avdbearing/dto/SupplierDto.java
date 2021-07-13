@@ -11,4 +11,8 @@ public class SupplierDto {
     private String companyName;
     private String site;
     private boolean isForeign;
+
+//    public SupplierDto(String companyName) {
+//        this.companyName = companyName;
+//    }
 }

@@ -74,19 +74,96 @@ public class BusinessMapper {
     }
 
 
-    public static Part convertToPart(PartDto partDto) {
-        Part part = new Part();
-        part.setId(partDto.getId());
-        part.setSize(convertToSize(partDto.getSize()));
-        part.setArticle(partDto.getArticle());
-        part.setBrand(partDto.getBrand());
-        part.setDescription(partDto.getDescription());
-        part.setPrice(partDto.getPrice());
-        part.setType(partDto.getType());
-        part.setSupplier(convertToSupplier(partDto.getSupplier()));
+//
 
+    public static SizeDto convertToSizeDto(Size size) {
+        SizeDto sizeDto = new SizeDto();
+        sizeDto.setId(size.getId());
+        sizeDto.setInner(size.getInner());
+        sizeDto.setOuter(size.getOuter());
+        sizeDto.setWidth(size.getWidth());
+        return sizeDto;
 
-        return part;
     }
+
+//    public static PartCreateDto convertToPartDto(Part part) {
+//        PartCreateDto partCreateDto = new PartCreateDto();
+//        partCreateDto.setId(part.getId());
+//        partCreateDto.setSize(convertToSizeDto(part.getSize()));
+//        partCreateDto.setArticle(part.getArticle());
+//        partCreateDto.setBrand(part.getBrand());
+//        partCreateDto.setDescription(part.getDescription());
+//        partCreateDto.setPrice(part.getPrice());
+//        partCreateDto.setType(part.getType());
+//        partCreateDto.setSupplier(convertToSupplierDto(part.getSupplier()));
+//
+//
+//        return partCreateDto;
+//
+//
+//    }
+
+    public static AddressDto convertToAddressDto(Address address) {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setId(address.getId());
+        addressDto.setCountry(address.getCountry());
+        addressDto.setCity(address.getCity());
+        addressDto.setStreet(address.getStreet());
+        addressDto.setHouseNumber(address.getHouseNumber());
+
+        return addressDto;
+    }
+
+    public static ContactDto convertToContactDto(Contact contact) {
+        ContactDto contactDto = new ContactDto();
+
+        contactDto.setAddress(convertToAddressDto(contact.getAddress()));
+        contactDto.setId(contact.getId());
+        contactDto.setFirstName(contact.getFirstName());
+        contactDto.setSecondName(contact.getSecondName());
+        contactDto.setPhone(contact.getPhone());
+        contactDto.setType(contact.getType());
+        return contactDto;
+
+    }
+
+    public static SupplierDto convertToSupplierDto(Supplier supplier) {
+        SupplierDto supplierDto = new SupplierDto();
+        supplierDto.setId(supplier.getId());
+        supplierDto.setContact(convertToContactDto(supplier.getContact()));
+        supplierDto.setCompanyName(supplier.getCompanyName());
+        supplierDto.setSite(supplier.getSite());
+        supplierDto.setForeign(supplier.isForeign());
+
+        return supplierDto;
+
+    }
+
+    public static UserDto convertToUserDto(User user) {
+
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setContact(convertToContactDto(user.getContact()));
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setUserRole(user.getUserRole());
+        userDto.setUserStatus(user.getUserStatus());
+
+        return userDto;
+
+
+    }
+
+    public static ClientDto convertToClientDto(Client client) {
+        ClientDto clientDto = new ClientDto();
+
+        clientDto.setId(client.getId());
+        clientDto.setContact(convertToContactDto(client.getContact()));
+        clientDto.setUser(convertToUserDto(client.getUser()));
+
+
+        return clientDto;
+    }
+
 
 }

@@ -1,7 +1,7 @@
 package com.avdbearing.services;
 
 import com.avdbearing.domain.core.Part;
-import com.avdbearing.dto.PartDto;
+import com.avdbearing.dto.PartCreateDto;
 
 
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface PartService {
 
-    void addPart(PartDto partDto);
+    void addPart(PartCreateDto partCreateDto);
 
     void checkInventory(Part article);
 
-    void updatePart(PartDto partDto);
+    void updatePart(PartCreateDto partCreateDto);
 
     void deletePart(String article);
 

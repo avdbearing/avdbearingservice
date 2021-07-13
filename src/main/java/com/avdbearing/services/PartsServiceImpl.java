@@ -1,8 +1,7 @@
 package com.avdbearing.services;
 
-import com.avdbearing.domain.User;
 import com.avdbearing.domain.core.Part;
-import com.avdbearing.dto.PartDto;
+import com.avdbearing.dto.PartCreateDto;
 import com.avdbearing.repositories.*;
 
 import javax.annotation.Resource;
@@ -20,7 +19,7 @@ public class PartsServiceImpl implements PartService {
     }
 
     @Override
-    public void addPart(PartDto partDto) {
+    public void addPart(PartCreateDto partCreateDto) {
 
 
     }
@@ -31,7 +30,7 @@ public class PartsServiceImpl implements PartService {
     }
 
     @Override
-    public void updatePart(PartDto partDto) {
+    public void updatePart(PartCreateDto partCreateDto) {
 
     }
 
