@@ -3,15 +3,26 @@ package com.avdbearing.mappers;
 import com.avdbearing.domain.Address;
 import com.avdbearing.domain.Client;
 import com.avdbearing.domain.Contact;
+import com.avdbearing.domain.Enum.PartType;
 import com.avdbearing.domain.User;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
 import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.*;
+import com.avdbearing.repositories.SupplierRepository;
+
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BusinessMapper {
+    @Resource
+    SupplierRepository supplierRepository;
 
-    public static Size convertToSize(SizeDto sizeDto) {
+
+    public Size convertToSize(SizeDto sizeDto) {
         Size size = new Size();
         size.setId(sizeDto.getId());
         size.setInner(sizeDto.getInner());
@@ -21,7 +32,7 @@ public class BusinessMapper {
         return size;
     }
 
-    public static Address convertToAddress(AddressDto addressDto) {
+    public Address convertToAddress(AddressDto addressDto) {
         Address address = new Address();
         address.setId(addressDto.getId());
         address.setCountry(addressDto.getCountry());
@@ -31,7 +42,7 @@ public class BusinessMapper {
         return address;
     }
 
-    public static Contact convertToContact(ContactDto contactDto) {
+    public Contact convertToContact(ContactDto contactDto) {
         Contact contact = new Contact();
         contact.setAddress(convertToAddress(contactDto.getAddress()));
         contact.setId(contactDto.getId());
@@ -42,7 +53,7 @@ public class BusinessMapper {
         return contact;
     }
 
-    public static Supplier convertToSupplier(SupplierDto supplierDto) {
+    public Supplier convertToSupplier(SupplierDto supplierDto) {
         Supplier supplier = new Supplier();
         supplier.setId(supplierDto.getId());
         supplier.setContact(convertToContact(supplierDto.getContact()));
@@ -53,7 +64,7 @@ public class BusinessMapper {
         return supplier;
     }
 
-    public static User convertToUser(UserDto userDto) {
+    public User convertToUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
         user.setContact(convertToContact(userDto.getContact()));
@@ -64,7 +75,7 @@ public class BusinessMapper {
         return user;
     }
 
-    public static Client convertToClient(ClientDto clientDto) {
+    public Client convertToClient(ClientDto clientDto) {
         Client client = new Client();
         client.setId(clientDto.getId());
         client.setContact(convertToContact(clientDto.getContact()));
@@ -76,7 +87,7 @@ public class BusinessMapper {
 
 //
 
-    public static SizeDto convertToSizeDto(Size size) {
+    public SizeDto convertToSizeDto(Size size) {
         SizeDto sizeDto = new SizeDto();
         sizeDto.setId(size.getId());
         sizeDto.setInner(size.getInner());
@@ -86,24 +97,97 @@ public class BusinessMapper {
 
     }
 
-//    public static PartCreateDto convertToPartDto(Part part) {
-//        PartCreateDto partCreateDto = new PartCreateDto();
-//        partCreateDto.setId(part.getId());
-//        partCreateDto.setSize(convertToSizeDto(part.getSize()));
-//        partCreateDto.setArticle(part.getArticle());
-//        partCreateDto.setBrand(part.getBrand());
-//        partCreateDto.setDescription(part.getDescription());
-//        partCreateDto.setPrice(part.getPrice());
-//        partCreateDto.setType(part.getType());
-//        partCreateDto.setSupplier(convertToSupplierDto(part.getSupplier()));
-//
-//
-//        return partCreateDto;
-//
-//
-//    }
+    public PartDto convertToPartDto(Part part) {
 
-    public static AddressDto convertToAddressDto(Address address) {
+
+
+        PartDto partDto = new PartDto();
+        partDto.setId(part.getId());
+        partDto.setSizeDto(convertToSizeDto(part.getSize()));
+        partDto.setArticle(part.getArticle());
+        partDto.setBrand(part.getBrand());
+        partDto.setAmount(part.getAmount());
+        partDto.setDescription(part.getDescription());
+        partDto.setPrice(part.getPrice());
+        partDto.setType(part.getType().toString());
+        partDto.setSupplier(part.getSupplier().getCompanyName());
+
+
+        return partDto;
+
+
+    }
+
+    public Part convertToPart(PartDto partDto) {
+        Supplier supplier = supplierRepository.findByCompanyName(partDto.getSupplier());
+
+        Part part = new Part();
+        part.setId(partDto.getId());
+        part.setSize(convertToSize(partDto.getSizeDto()));
+        part.setArticle(partDto.getArticle());
+        part.setBrand(partDto.getBrand());
+        part.setAmount(partDto.getAmount());
+        part.setDescription(partDto.getDescription());
+        part.setPrice(partDto.getPrice());
+        part.setType(PartType.valueOf(partDto.getType()));
+        part.setSupplier(supplier);
+
+        return part;
+    }
+
+    public List<Part> convertToPartList(List<PartDto> dtoList) {
+        List<Part> partList = new ArrayList<>();
+//        dtoList.forEach(partDto -> {
+//            partList.add(convertToPart(partDto));
+//        });
+
+        for (int i = 0; i < dtoList.size(); i++) {
+            partList.add(convertToPart(dtoList.get(i)));
+        }
+
+
+//        return dtoList.stream().map(partDto -> convertToPart(partDto)).collect(Collectors.toList());
+
+        return partList;
+    }
+
+
+    public List<PartDto> convertToPartListDto(List<Part> parts) {
+        List<PartDto> partDtoList = new ArrayList<>();
+
+
+        for (int i = 0; i < parts.size(); i++) {
+
+            partDtoList.add(convertToPartDto(parts.get(i)));
+
+        }
+
+        return partDtoList;
+    }
+
+    public List<SupplierDto> convertToSupplierListDto(List<Supplier> suppliers) {
+        List<SupplierDto> supplierDtoList = new ArrayList<>();
+        for (int i = 0; i < suppliers.size(); i++) {
+
+            supplierDtoList.add(convertToSupplierDto(suppliers.get(i)));
+
+        }
+        return supplierDtoList;
+    }
+
+
+    public List<Supplier> convertToSupplierList(List<SupplierDto> supplierDtos) {
+
+        List<Supplier> supplierList = new ArrayList<>();
+        for (int i = 0; i < supplierDtos.size(); i++) {
+            supplierList.add(convertToSupplier(supplierDtos.get(i)));
+
+
+        }
+        return supplierList;
+    }
+
+    public AddressDto convertToAddressDto(Address address) {
         AddressDto addressDto = new AddressDto();
         addressDto.setId(address.getId());
         addressDto.setCountry(address.getCountry());
@@ -114,7 +198,7 @@ public class BusinessMapper {
         return addressDto;
     }
 
-    public static ContactDto convertToContactDto(Contact contact) {
+    public ContactDto convertToContactDto(Contact contact) {
         ContactDto contactDto = new ContactDto();
 
         contactDto.setAddress(convertToAddressDto(contact.getAddress()));
@@ -127,7 +211,7 @@ public class BusinessMapper {
 
     }
 
-    public static SupplierDto convertToSupplierDto(Supplier supplier) {
+    public SupplierDto convertToSupplierDto(Supplier supplier) {
         SupplierDto supplierDto = new SupplierDto();
         supplierDto.setId(supplier.getId());
         supplierDto.setContact(convertToContactDto(supplier.getContact()));
@@ -139,7 +223,7 @@ public class BusinessMapper {
 
     }
 
-    public static UserDto convertToUserDto(User user) {
+    public UserDto convertToUserDto(User user) {
 
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
@@ -154,7 +238,7 @@ public class BusinessMapper {
 
     }
 
-    public static ClientDto convertToClientDto(Client client) {
+    public ClientDto convertToClientDto(Client client) {
         ClientDto clientDto = new ClientDto();
 
         clientDto.setId(client.getId());

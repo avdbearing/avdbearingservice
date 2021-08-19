@@ -1,21 +1,22 @@
 package com.avdbearing.services;
 
 
-import com.avdbearing.domain.Contact;
-import com.avdbearing.domain.User;
-import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Supplier;
+import com.avdbearing.dto.SupplierCreateDto;
+import com.avdbearing.dto.SupplierDto;
 
 import java.util.List;
 
 
 public interface SupplierService {
 
-    void addSupplier(Supplier supplier, Contact contact, User manager);
+    void addSupplier(SupplierCreateDto supplierCreateDto);
 
-    void updateSupplier(Supplier supplier, Contact contact, User manager);
+    void updateSupplier(Supplier companyName);
 
-    void deleteSupplier(Supplier company_name, User manager);
+    void checkSupplier(Supplier supplier);
 
-    List<Supplier> getAll();
+    void deleteSupplier(Supplier companyName);
+
+    List<SupplierDto> getAll();
 }

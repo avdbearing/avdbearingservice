@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title>Supplier information</title>
+</head>
+<body>
+<div class="container-xxl  ">
+    <div class="table-responsive">
+        <div class="table bg-light   justify-content-center mt-5">
+            <div class=" card-title p-3 mb-2 bg-secondary text-white rounded-2 border-3 ">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2> Supplier Information</h2>
+
+                    </div>
+
+                    <div class="col-sm-6  text-md-end  ">
+
+
+                        <a href="#addModal" class="add" data-bs-tittle="modal">
+                            <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="add">
+                                <button type="button" class="btn btn-success " data-bs-toggle="modal"
+                                        data-bs-target="#addModal">Add
+                                    Supplier
+                                </button>
+                            </i>
+                        </a>
+
+                        <a href="#deleteModal" class="delete" data-bs-toggle="modal">
+                            <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="delete">
+                                <button type="button" class="btn btn-danger " data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                >Delete Supplier
+                                </button>
+                            </i>
+                        </a>
+
+
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+
+                    <th scope="col">ID</th>
+                    <th scope="col">Name Company</th>
+                    <th scope="col">Site</th>
+                    <!--                    <th scope="col">isForeign</th>-->
+                    <th scope="col">First Name</th>
+                    <th scope="col">Second Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Street</th>
+                    <th scope="col">House number</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Edit</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="supplier :${suppliers}">
+
+                    <th scope="row" th:text=" ${supplier.id}"/>
+                    <td th:text="${supplier.companyName}"/>
+                    <td th:text="${supplier.site}"/>
+                    <!--                    <td th:text="${supplier.isForeign()}" />-->
+                    <td th:text="${supplier.contact.getFirstName()}"/>
+                    <td th:text="${supplier.contact.getSecondName()}"/>
+                    <td th:text="${supplier.contact.getPhone()}"/>
+                    <td th:text="${supplier.contact.address.getCountry()}"/>
+                    <td th:text="${supplier.contact.address.getCity()}"/>
+                    <td th:text="${supplier.contact.address.getStreet()}"/>
+                    <td th:text="${supplier.contact.address.getHouseNumber()}"/>
+
+
+                    <td><a href="/delete-supplier?id=${supplier.id}" class="btn btn-danger">Delete</a></td>
+
+
+                </tr>
+
+
+                </tbody>
+            </table>
+            <div class="page-link bg-secondary text-white  rounded-2  ">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="clearfix text-md-start mt-1">
+                            show <b>1</b> page <b>out of 25</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item ">
+                                    <a class="page-link text-dark" href="#" tabindex="-1"
+                                       aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">1</a></li>
+                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">2</a></li>
+                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">3</a></li>
+                                <li class="page-item text-dark">
+                                    <a class="page-link text-dark" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" style="display: none" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Supplier</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name Company</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Site</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label> First Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Second Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label> Phone</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Street</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>House Number</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" style="display: none" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Supplier</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Enter Name Company</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
+                    <input type="submit" class="btn btn-danger" value="delete supplier">
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<div id="addModal" class="modal fade" style="display:none" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="../add-supplier" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Supplier</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name Company</label>
+                            <input type="text" name="name_company" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Site</label>
+                            <input type="text" name="site" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label> First Name</label>
+                            <input type="text" name="first_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Second Name</label>
+                            <input type="text" name="second_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label> Phone</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Country</label>
+                            <input type="text" name="country" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" name="city" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Street</label>
+                            <input type="text" name="street" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>House Number</label>
+                            <input type="number" name="house_number" class="form-control" required>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-danger" data-bs-dismiss="modal" value="close">
+                    <button type="submit" class="btn btn-success">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>

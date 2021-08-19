@@ -1,6 +1,5 @@
 package com.avdbearing.dto;
 
-import com.avdbearing.domain.Contact;
 import lombok.Data;
 
 
@@ -12,7 +11,5 @@ public class SupplierDto {
     private String site;
     private boolean isForeign;
 
-//    public SupplierDto(String companyName) {
-//        this.companyName = companyName;
-//    }
+
 }
