@@ -43,10 +43,10 @@ public class Part {
     private boolean isNew;
 
 
-    @ElementCollection
-    @CollectionTable(name = "data")
-    @Column(name = "price")
-    private Map<LocalDateTime, Double> costDynamic = new LinkedHashMap<>();
+//    @ElementCollection
+//    @CollectionTable(name = "data")
+//    @Column(name = "price")
+//    private Map<LocalDateTime, Double> costDynamic = new LinkedHashMap<>();
 
 
     private LocalDateTime created;

@@ -80,7 +80,7 @@
                     <td th:text="${part.sizeDto.getInner()}"/>
                     <td th:text="${part.sizeDto.getOuter()}"/>
                     <td th:text="${part.sizeDto.getWidth()}"/>
-                    <td th:text="${part.supplierDto.companyName}"/>
+                    <td th:text="${part.supplier}"/>
 
                     <td><a href="/delete-part?id=${part.id}" class="btn btn-danger">Delete</a></td>
                     <td><a href="/editPart?id=${part.id}" class="btn btn-warning">Update</a></td>
