@@ -1,8 +1,14 @@
 package com.avdbearing.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UserCreateDto {
 //    private String firstName;
 //    private String secondName;
@@ -12,6 +18,7 @@ public class UserCreateDto {
 //    private String city;
 //    private String street;
 //    private int houseNumber;
+
     private String email;
     private String password;
     private String userRole;

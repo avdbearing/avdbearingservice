@@ -61,7 +61,7 @@
                     <th scope="col">House number</th>
                     <th scope="col">Email</th>
                     <th scope="col">Password</th>
-<!--                    <th scope="col">Client Status</th>-->
+                    <th scope="col">Client Status</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Edit</th>
 
@@ -81,6 +81,8 @@
                     <td th:text="${client.contact.address.houseNumber}"/>
                     <td th:text="${client.user.email}"/>
                     <td th:text="${client.user.password}"/>
+                    <td th:text="${client.user.userStatus}"/>
+                    
 <!--                    <td th:text="${client.user.userStatus}"/>-->
 
 

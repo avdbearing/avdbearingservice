@@ -7,7 +7,12 @@ import com.avdbearing.domain.Enum.PartType;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
 import com.avdbearing.domain.core.Supplier;
+import com.avdbearing.dto.ClientCreateDto;
+import com.avdbearing.dto.UserCreateDto;
+import com.avdbearing.dto.UserDto;
 import com.avdbearing.repositories.*;
+import com.avdbearing.services.ClientService;
+import com.avdbearing.services.UserService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -39,7 +44,10 @@ class AppStartupRunner implements ApplicationRunner {
     ContactRepository contactRepository;
     @Resource
     SupplierRepository supplierRepository;
-
+    @Resource
+    UserService userService;
+    @Resource
+    ClientService clientService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -63,5 +71,12 @@ class AppStartupRunner implements ApplicationRunner {
 
         partRepository.save(firstPart);
 
+//        userService.addUser(new UserCreateDto("client@gmail.com", "qwerty", "CLIENT", "NEW"));
+
+        clientService.addClient(new ClientCreateDto(0, "serg", "serg", "+32423423423", "CLIENT", "ukraine", "kiev",
+                "kievska", 5, "serg@", "qwerty", "CLIENT", "NEW"));
+
     }
+
+
 }

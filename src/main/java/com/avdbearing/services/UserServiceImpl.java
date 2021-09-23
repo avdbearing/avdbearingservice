@@ -8,17 +8,15 @@ import com.avdbearing.mappers.BusinessMapper;
 import com.avdbearing.repositories.AddressRepository;
 import com.avdbearing.repositories.ContactRepository;
 import com.avdbearing.repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+@Service
 public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;
-    @Resource
-    private ContactRepository contactRepository;
-    @Resource
-    private AddressRepository addressRepository;
+
     @Resource
     private BusinessMapper businessMapper;
 

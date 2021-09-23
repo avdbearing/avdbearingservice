@@ -291,7 +291,7 @@ public class BusinessMapper {
                 clientCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
         Contact contact = new Contact(0, clientCreateDto.getFirstName(), clientCreateDto.getSecondName(), clientCreateDto.getPhone(),
                 address, ContactType.CLIENT, LocalDateTime.now(), LocalDateTime.now());
-        User user = new User(0,  clientCreateDto.getEmail(), clientCreateDto.getPassword(), UserRole.CLIENT, UserStatus.ACTIVE,
+        User user = new User(0,  clientCreateDto.getEmail(), clientCreateDto.getPassword(), UserRole.CLIENT,UserStatus.NEW,
                 LocalDateTime.now(), LocalDateTime.now());
         if (findedClient == null) {
             findedClient = new Client();
