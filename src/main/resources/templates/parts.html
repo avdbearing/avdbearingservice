@@ -77,13 +77,13 @@
                     <td th:text="${part.description}"/>
                     <td th:text="${part.price}"/>
                     <td th:text="${part.type}"/>
-                    <td th:text="${part.sizeDto.getInner()}"/>
-                    <td th:text="${part.sizeDto.getOuter()}"/>
-                    <td th:text="${part.sizeDto.getWidth()}"/>
+                    <td th:text="${part.sizeDto.inner}"/>
+                    <td th:text="${part.sizeDto.outer}"/>
+                    <td th:text="${part.sizeDto.width}"/>
                     <td th:text="${part.supplier}"/>
 
-                    <td><a href="/delete-part?id=${part.id}" class="btn btn-danger">Delete</a></td>
-                    <td><a href="/editPart?id=${part.id}" class="btn btn-warning">Update</a></td>
+                    <td><a th:href="@{/part/delete/{id}(id=${part.getId()})}" class="btn btn-danger">Delete</a></td>
+                    <td><a th:href="@{/part/update/{id}(id=${part.getId()})}" class="btn btn-warning">Update</a></td>
 
 
                 </tr>
@@ -119,103 +119,58 @@
 </div>
 
 <div id="editModal" class="modal fade" style="display: none" aria-hidden="true">
-
     <div class="modal-dialog">
-
         <div class="modal-content">
-
             <form>
-
-
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Part</h4>
-
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-
-
                 </div>
-
-
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label>Article</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Brand</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Amount</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Description</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Price</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Type</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Inner</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Outer</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Width</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                     <div class="form-group">
                         <label>Supplier ID</label>
                         <input type="text" class="form-control" required>
-
                     </div>
-
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
-
 </div>
 
 <div id="deleteModal" class="modal fade" style="display: none" aria-hidden="true">
@@ -237,6 +192,8 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
+
+
                     <input type="submit" class="btn btn-danger" value="delete part">
                 </div>
             </form>
@@ -248,7 +205,7 @@
 <div id="addModal" class="modal fade" style="display:none" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="/part/create" method="post" th:object="${newPart}">
+            <form th:action="@{/part/create}" method="post" th:object="${newPart}">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Part</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
@@ -259,53 +216,66 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Article</label>
-                            <input th:field="*{article}" type="text" name="article" class="form-control" required>
+                            <input th:field="*{article}" type="text" name="article" class="form-control" required
+                                   placeholder="Enter article">
                         </div>
                         <div class="form-group">
                             <label>Brand</label>
-                            <input th:field="*{brand}" type="text" name="brand" class="form-control" required>
+                            <input th:field="*{brand}" type="text" name="brand" class="form-control" required
+                                   placeholder="Enter brand">
                         </div>
                         <div class="form-group">
                             <label>Amount</label>
-                            <input th:field="*{amount}" type="text" name="quantity" class="form-control" required>
+                            <input th:field="*{amount}" type="text" name="quantity" class="form-control" required
+                                   placeholder="Enter amount">
                         </div>
                         <div class="form-group">
                             <label>Description</label>
                             <input th:field="*{description}" type="text" name="description" class="form-control"
-                                   required>
+                                   required placeholder="Enter description">
                         </div>
                         <div class="form-group">
                             <label>Price</label>
-                            <input th:field="*{price}" type="text" name="price" class="form-control" required>
+                            <input th:field="*{price}" type="text" name="price" class="form-control" required
+                                   placeholder="Enter price">
                         </div>
                         <div class="form-group">
                             <label>Type</label>
-                            <input th:field="*{type}" type="text" name="type" class="form-control" required>
+                            <!--                            <input th:field="*{type}" type="text" name="type" class="form-control" required placeholder="Enter type">-->
+                            <select th:field="*{type}" class="form-select form-select-sm" name="supplier_id"
+                                    aria-label=".form-select-sm example">
+                                <option value="none">choose type</option>
+
+                                <option th:each="type:${partTypes}" th:value="${type.name()}"
+                                        th:text="${type.name()}"></option>
+
+
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Inner</label>
-                            <input th:field="*{sizeDto.getInner()}" type="text" name="iner" class="form-control"
-                                   required>
+                            <input th:field="*{inner}" type="text" name="iner" class="form-control"
+                                   required placeholder="Enter inner size">
                         </div>
                         <div class="form-group">
                             <label>Outer</label>
-                            <input th:field="*{sizeDto.getOuter()}" type="text" name="outer" class="form-control"
-                                   required>
+                            <input th:field="*{outer}" type="text" name="outer" class="form-control"
+                                   required placeholder="Enter outer size">
                         </div>
                         <div class="form-group">
                             <label>Width</label>
-                            <input th:field="*{sizeDto.getWidth()}" type="text" name="width" class="form-control"
-                                   required>
+                            <input th:field="*{width}" type="text" name="width" class="form-control"
+                                   required placeholder="Enter width size">
                         </div>
 
                         <div class="form-group">
-                            <label>Supplier ID</label>
-                            <select th:field="*{supplier}" class="form-select form-select-sm" name="supplier_id"
+                            <label>Supplier company</label>
+                            <select th:field="*{supplierName}" class="form-select form-select-sm" name="supplier_id"
                                     aria-label=".form-select-sm example">
-                                <option selected>Open this select menu</option>
+                                <option value="none">choose supplier</option>
 
-                                <option th:each="supplier:${suppliers}"><span th:text=" ${supplier.companyName}"/>
-                                </option>
+                                <option th:each="supplier:${suppliers}" th:value="${supplier.companyName}"
+                                        th:text="${supplier.companyName}"></option>
 
 
                             </select>

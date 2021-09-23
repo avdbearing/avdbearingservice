@@ -1,22 +1,24 @@
 package com.avdbearing.services;
 
 import com.avdbearing.domain.Client;
-import com.avdbearing.domain.Contact;
-import com.avdbearing.domain.User;
-import com.avdbearing.domain.core.Part;
+import com.avdbearing.dto.ClientCreateDto;
+import com.avdbearing.dto.ClientDto;
+
 
 import java.util.List;
 
 public interface ClientService {
 
-    void addClient(Client client, Contact contact, User user, User manager);
+    ClientDto addClient(ClientCreateDto clientCreateDto);
 
-    void updateClient(Client client, Contact contact, User user, User manager);
+    void checkClient(Client client);
 
-    void deleteClient(Client second_name, Client first_name, User manager);
-    // or email, or id
+    ClientDto getClientById(long id);
 
-    List<Client> getAll();
+    void updateClient(ClientDto clientDto);
 
+    void deleteClientById(long id);
+
+    List<ClientDto> getAll();
 
 }

@@ -2,6 +2,10 @@ package com.avdbearing.services;
 
 import com.avdbearing.domain.Contact;
 import com.avdbearing.domain.User;
+import com.avdbearing.domain.core.Supplier;
+import com.avdbearing.dto.SupplierDto;
+import com.avdbearing.dto.UserCreateDto;
+import com.avdbearing.dto.UserDto;
 
 import java.util.List;
 
@@ -9,11 +13,15 @@ import java.util.List;
 public interface UserService {
 
 
-    void addUser(User user, Contact contact, User manager);
+    UserDto addUser(UserCreateDto userCreateDto);
 
-    void updateUser(User user, Contact contact, User manager);
+    void User(User user);
 
-    void deleteUser(User email, User manager);
+    UserDto getUserById(long id);
 
-    List<User> getAll();
+    void updateUser(UserDto userDto);
+
+    void deleteUserById(long id);
+
+    List<UserDto> getAll();
 }

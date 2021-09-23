@@ -10,13 +10,16 @@ import java.util.List;
 
 public interface SupplierService {
 
-    void addSupplier(SupplierCreateDto supplierCreateDto);
+    SupplierDto addSupplier(SupplierCreateDto supplierCreateDto);
 
-    void updateSupplier(Supplier companyName);
 
     void checkSupplier(Supplier supplier);
 
-    void deleteSupplier(Supplier companyName);
+    SupplierDto getSupplierById(long id);
+
+    void updateSupplier(SupplierDto supplierDto);
+
+    void deleteSupplierById(long id);
 
     List<SupplierDto> getAll();
 }

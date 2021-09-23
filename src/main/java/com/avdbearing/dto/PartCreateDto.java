@@ -9,6 +9,7 @@ public class PartCreateDto {
 
     private String article;
     private String brand;
+    private int amount;
     private String type;
     private double inner;
     private double outer;
@@ -16,8 +17,6 @@ public class PartCreateDto {
     private double price;
     private String description;
     private String supplierName;
-
-
 
 
 //    public PartDto(String inner, String outer, String width, String article,

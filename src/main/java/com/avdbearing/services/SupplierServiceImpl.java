@@ -18,6 +18,10 @@ public class SupplierServiceImpl implements SupplierService {
     private SupplierRepository supplierRepository;
     @Resource
     private BusinessMapper businessMapper;
+    @Resource
+    private AddressRepository addressRepository;
+    @Resource
+    private ContactRepository contactRepository;
 
     @Override
     public List<SupplierDto> getAll() {
@@ -27,8 +31,14 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void addSupplier(SupplierCreateDto supplierCreateDto) {
+    public SupplierDto addSupplier(SupplierCreateDto supplierCreateDto) {
+        Supplier supplier = businessMapper.convertToSupplierEntity(supplierCreateDto);
 
+        addressRepository.save(supplier.getContact().getAddress());
+        contactRepository.save(supplier.getContact());
+        supplierRepository.save(supplier);
+
+        return businessMapper.convertToSupplierDto(supplier);
     }
 
     @Override
@@ -36,14 +46,34 @@ public class SupplierServiceImpl implements SupplierService {
 
     }
 
-    @Override
-    public void updateSupplier(Supplier companyName) {
 
+    @Override
+    public void deleteSupplierById(long id) {
+        supplierRepository.deleteById(id);
     }
 
     @Override
-    public void deleteSupplier(Supplier companyName) {
+    public SupplierDto getSupplierById(long id) {
 
+        Supplier currentSupplier = supplierRepository.findById(id).orElseThrow();
+
+        System.out.println(businessMapper.convertToSupplierDto(currentSupplier));
+
+        return businessMapper.convertToSupplierDto(currentSupplier);
     }
 
+    @Override
+    public void updateSupplier(SupplierDto supplierDto) {
+
+        System.out.println(supplierDto);
+
+        Supplier entitySupplier = businessMapper.convertToSupplier(supplierDto);
+        System.out.println(entitySupplier);
+
+        addressRepository.save(entitySupplier.getContact().getAddress());
+        contactRepository.save(entitySupplier.getContact());
+        supplierRepository.save(entitySupplier);
+
+
+    }
 }

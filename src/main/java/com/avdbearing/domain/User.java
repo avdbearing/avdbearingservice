@@ -19,8 +19,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
-    private Contact contact;
+//    @OneToOne
+//    private Contact contact;
     @Column(nullable = false,unique = true)
     private String email;
     @Column(nullable = false)

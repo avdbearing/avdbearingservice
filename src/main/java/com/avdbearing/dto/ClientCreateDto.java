@@ -3,11 +3,18 @@ package com.avdbearing.dto;
 import com.avdbearing.domain.Enum.ContactType;
 import com.avdbearing.domain.Enum.UserRole;
 import com.avdbearing.domain.Enum.UserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ClientCreateDto {
 
+    private long id;
     private String firstName;
     private String secondName;
     private String phone;

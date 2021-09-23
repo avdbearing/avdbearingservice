@@ -1,9 +1,13 @@
 package com.avdbearing.dto;
 
 import com.avdbearing.domain.Enum.ContactType;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 
 public class ContactDto {
     private long id;

@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
-    <title>Supplier information</title>
+    <title>Client information</title>
 </head>
 <body>
 <div class="container-xxl  ">
@@ -18,7 +18,7 @@
             <div class=" card-title p-3 mb-2 bg-secondary text-white rounded-2 border-3 ">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2> Supplier Information</h2>
+                        <h2> Client Information</h2>
 
                     </div>
 
@@ -29,7 +29,7 @@
                             <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="add">
                                 <button type="button" class="btn btn-success " data-bs-toggle="modal"
                                         data-bs-target="#addModal">Add
-                                    Supplier
+                                    Client
                                 </button>
                             </i>
                         </a>
@@ -38,7 +38,7 @@
                             <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="delete">
                                 <button type="button" class="btn btn-danger " data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"
-                                >Delete Supplier
+                                >Delete Client
                                 </button>
                             </i>
                         </a>
@@ -52,9 +52,6 @@
                 <tr>
 
                     <th scope="col">ID</th>
-                    <th scope="col">Name Company</th>
-                    <th scope="col">Site</th>
-                    <!--                    <th scope="col">isForeign</th>-->
                     <th scope="col">First Name</th>
                     <th scope="col">Second Name</th>
                     <th scope="col">Phone</th>
@@ -62,6 +59,9 @@
                     <th scope="col">City</th>
                     <th scope="col">Street</th>
                     <th scope="col">House number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+<!--                    <th scope="col">Client Status</th>-->
                     <th scope="col">Delete</th>
                     <th scope="col">Edit</th>
 
@@ -69,24 +69,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="supplier :${suppliers}">
+                <tr th:each="client :${clients}">
 
-                    <th scope="row" th:text=" ${supplier.id}"/>
-                    <td th:text="${supplier.companyName}"/>
-                    <td th:text="${supplier.site}"/>
-                    <!--                    <td th:text="${supplier.isForeign()}" />-->
-                    <td th:text="${supplier.contact.getFirstName()}"/>
-                    <td th:text="${supplier.contact.getSecondName()}"/>
-                    <td th:text="${supplier.contact.getPhone()}"/>
-                    <td th:text="${supplier.contact.address.getCountry()}"/>
-                    <td th:text="${supplier.contact.address.getCity()}"/>
-                    <td th:text="${supplier.contact.address.getStreet()}"/>
-                    <td th:text="${supplier.contact.address.getHouseNumber()}"/>
+                    <th scope="row" th:text=" ${client.id}"/>
+                    <td th:text="${client.contact.firstName}"/>
+                    <td th:text="${client.contact.secondName}"/>
+                    <td th:text="${client.contact.phone}"/>
+                    <td th:text="${client.contact.address.country}"/>
+                    <td th:text="${client.contact.address.city}"/>
+                    <td th:text="${client.contact.address.street}"/>
+                    <td th:text="${client.contact.address.houseNumber}"/>
+                    <td th:text="${client.user.email}"/>
+                    <td th:text="${client.user.password}"/>
+<!--                    <td th:text="${client.user.userStatus}"/>-->
 
 
-                    <td><a th:href="@{/supplier/delete/{id}(id=${supplier.getId()})}" class="btn btn-danger">Delete</a>
+                    <td><a th:href="@{/client/delete/{id}(id=${client.getId()})}" class="btn btn-danger">Delete</a>
                     </td>
-                    <td><a th:href="@{/supplier/update/{id}(id=${supplier.getId()})}" class="btn btn-warning">Update</a>
+                    <td><a th:href="@{/client/update/{id}(id=${client.getId()})}" class="btn btn-warning">Update</a>
                     </td>
 
                 </tr>
@@ -128,7 +128,7 @@
             <form>
 
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Supplier</h4>
+                    <h4 class="modal-title">Edit Client</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
@@ -180,7 +180,7 @@
         <div class="modal-content">
             <form>
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Supplier</h4>
+                    <h4 class="modal-title">Delete Client</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
 
                     </button>
@@ -205,24 +205,16 @@
 <div id="addModal" class="modal fade" style="display:none" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/supplier/create}" method="post" th:object="${newSupplier}">
+            <form th:action="@{/client/create}" method="post" th:object="${newClient}">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Supplier</h4>
+                    <h4 class="modal-title">Add Client</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
 
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Name Company</label>
-                            <input th:field="*{companyName}" type="text" name="name_company" class="form-control"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <label>Site</label>
-                            <input th:field="*{site}" type="text" name="site" class="form-control" required>
-                        </div>
+
 
                         <div class="form-group">
                             <label> First Name</label>
@@ -252,9 +244,31 @@
                         </div>
                         <div class="form-group">
                             <label>House Number</label>
-                            <input th:field="*{houseNumber}" type="number" name="house_number" class="form-control"
+                            <input th:field="*{houseNumber}" type="text" name="house_number" class="form-control"
                                    required>
                         </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input th:field="*{email}" type="text" name="house_number" class="form-control"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input th:field="*{password}" type="text" name="house_number" class="form-control"
+                                   required>
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label>Status</label>-->
+<!--                            <select th:field="*{userStatus}" class="form-select form-select-sm" name="supplier_id"-->
+<!--                                    aria-label=".form-select-sm example">-->
+<!--                                <option value="none">choose status</option>-->
+
+<!--                                <option th:each="client:${clients}" th:value="${client.user.userStatus}"-->
+<!--                                        th:text="${client.user.userStatus}"></option>-->
+
+
+<!--                            </select>-->
+<!--                        </div>-->
 
                     </div>
                 </div>

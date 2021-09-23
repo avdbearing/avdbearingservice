@@ -10,13 +10,16 @@ import java.util.List;
 
 public interface PartService {
 
-    void addPart(PartCreateDto partCreateDto);
+    PartDto addPart(PartCreateDto partCreateDto);
 
     void checkInventory(Part article);
 
-    void updatePart(PartCreateDto partCreateDto);
+    PartDto getPartById(long id);
 
-    void deletePart(String article);
+    void updatePart(PartDto partDto);
+
+
+    void deletePartById(long id);
 
     List<PartDto> getAll();
 

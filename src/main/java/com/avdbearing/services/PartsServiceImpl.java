@@ -1,5 +1,6 @@
 package com.avdbearing.services;
 
+import com.avdbearing.domain.Enum.PartType;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.dto.PartCreateDto;
 import com.avdbearing.dto.PartDto;
@@ -16,6 +17,10 @@ public class PartsServiceImpl implements PartService {
     private PartRepository partRepository;
     @Resource
     private BusinessMapper businessMapper;
+    @Resource
+    private SizeRepository sizeRepository;
+    @Resource
+    private SupplierRepository supplierRepository;
 
 
     @Override
@@ -27,11 +32,21 @@ public class PartsServiceImpl implements PartService {
         return businessMapper.convertToPartListDto(parts);
     }
 
+    @Override
+    public void deletePartById(long id) {
+        partRepository.deleteById(id);
+    }
 
     @Override
-    public void addPart(PartCreateDto partCreateDto) {
+    public PartDto addPart(PartCreateDto partCreateDto) {
+        Part part = businessMapper.convertToPartEntity(partCreateDto);
+
+        supplierRepository.save(part.getSupplier());
+        sizeRepository.save(part.getSize());
+        partRepository.save(part);
 
 
+        return businessMapper.convertToPartDto(part);
     }
 
     @Override
@@ -40,12 +55,28 @@ public class PartsServiceImpl implements PartService {
     }
 
     @Override
-    public void updatePart(PartCreateDto partCreateDto) {
+    public void updatePart(PartDto partDto) {
+
+        System.out.println(partDto);
+
+        Part entityPart = businessMapper.convertToPart(partDto);
+        System.out.println(entityPart);
+
+        sizeRepository.save(entityPart.getSize());
+        supplierRepository.save(entityPart.getSupplier());
+        partRepository.save(entityPart);
+
 
     }
 
-    @Override
-    public void deletePart(String article) {
 
+    @Override
+    public PartDto getPartById(long id) {
+
+        Part currentPart = partRepository.findById(id).orElseThrow();
+
+        System.out.println(businessMapper.convertToPartDto(currentPart));
+
+        return businessMapper.convertToPartDto(currentPart);
     }
 }

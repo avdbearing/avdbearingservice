@@ -3,16 +3,21 @@ package com.avdbearing.mappers;
 import com.avdbearing.domain.Address;
 import com.avdbearing.domain.Client;
 import com.avdbearing.domain.Contact;
+import com.avdbearing.domain.Enum.ContactType;
 import com.avdbearing.domain.Enum.PartType;
+import com.avdbearing.domain.Enum.UserRole;
+import com.avdbearing.domain.Enum.UserStatus;
 import com.avdbearing.domain.User;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
 import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.*;
-import com.avdbearing.repositories.SupplierRepository;
+import com.avdbearing.repositories.*;
+import com.avdbearing.services.UserService;
 
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +25,17 @@ import java.util.List;
 public class BusinessMapper {
     @Resource
     SupplierRepository supplierRepository;
+    @Resource
+    PartRepository partRepository;
+    @Resource
+    SizeRepository sizeRepository;
+    @Resource
+    ContactRepository contactRepository;
+    @Resource
+    ClientRepository clientRepository;
+
+    @Resource
+    UserRepository userRepository;
 
 
     public Size convertToSize(SizeDto sizeDto) {
@@ -61,13 +77,14 @@ public class BusinessMapper {
         supplier.setSite(supplierDto.getSite());
         supplier.setForeign(supplierDto.isForeign());
 
+
         return supplier;
     }
 
     public User convertToUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
-        user.setContact(convertToContact(userDto.getContact()));
+//        user.setContact(convertToContact(userDto.getContact()));
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setUserRole(userDto.getUserRole());
@@ -88,11 +105,11 @@ public class BusinessMapper {
 //
 
     public SizeDto convertToSizeDto(Size size) {
-        SizeDto sizeDto = new SizeDto();
+        SizeDto sizeDto = new SizeDto(size.getId(), size.getInner(), size.getOuter(), size.getWidth());
         sizeDto.setId(size.getId());
-        sizeDto.setInner(size.getInner());
-        sizeDto.setOuter(size.getOuter());
-        sizeDto.setWidth(size.getWidth());
+//        sizeDto.setInner(size.getInner());
+//        sizeDto.setOuter(size.getOuter());
+//        sizeDto.setWidth(size.getWidth());
         return sizeDto;
 
     }
@@ -100,10 +117,10 @@ public class BusinessMapper {
     public PartDto convertToPartDto(Part part) {
 
 
-
         PartDto partDto = new PartDto();
         partDto.setId(part.getId());
         partDto.setSizeDto(convertToSizeDto(part.getSize()));
+
         partDto.setArticle(part.getArticle());
         partDto.setBrand(part.getBrand());
         partDto.setAmount(part.getAmount());
@@ -119,7 +136,9 @@ public class BusinessMapper {
     }
 
     public Part convertToPart(PartDto partDto) {
-        Supplier supplier = supplierRepository.findByCompanyName(partDto.getSupplier());
+        Supplier supplier = supplierRepository.findByCompanyNameEquals(partDto.getSupplier());
+        System.out.println(supplier);
+
 
         Part part = new Part();
         part.setId(partDto.getId());
@@ -134,6 +153,196 @@ public class BusinessMapper {
 
         return part;
     }
+
+    public PartDto convertToPartDto(PartCreateDto partCreateDto) {
+
+        PartDto partDto = new PartDto();
+        SizeDto sizeDto = new SizeDto(0, partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
+
+        partDto.setArticle(partCreateDto.getArticle());
+        partDto.setBrand(partCreateDto.getBrand());
+        partDto.setDescription(partCreateDto.getDescription());
+        partDto.setAmount(partCreateDto.getAmount());
+        partDto.setPrice(partCreateDto.getPrice());
+        partDto.setType(partCreateDto.getType());
+        partDto.setSizeDto(sizeDto);
+        partDto.setSupplier(partCreateDto.getSupplierName());
+
+
+        return partDto;
+
+
+    }
+
+    public SupplierDto convertToSupplierDto(SupplierCreateDto supplierCreateDto) {
+        SupplierDto supplierDto = new SupplierDto();
+        AddressDto addressDto = new AddressDto(0, supplierCreateDto.getCountry(),
+                supplierCreateDto.getCity(), supplierCreateDto.getStreet(), 0);
+        ContactDto contactDto = new ContactDto(0, supplierCreateDto.getFirstName(),
+                supplierCreateDto.getSecondName(), supplierCreateDto.getPhone(), addressDto,
+                ContactType.valueOf(supplierCreateDto.getType()));
+
+
+        supplierDto.setCompanyName(supplierCreateDto.getCompanyName());
+        supplierDto.setSite(supplierCreateDto.getSite());
+        supplierDto.setContact(contactDto);
+
+        return supplierDto;
+    }
+
+    public Part convertToPartEntity(PartCreateDto partCreateDto) {
+
+        Part findedPart = partRepository.findByBrandAndArticle(partCreateDto.getBrand(), partCreateDto.getArticle());
+        Supplier supplier = supplierRepository.findByCompanyNameEquals(partCreateDto.getSupplierName());
+        Size findedSize = sizeRepository.findByInnerAndOuterAndWidth(partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
+
+        if (findedSize == null) {
+            findedSize = new Size(0, partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
+        }
+        if (findedPart == null) {
+            findedPart = new Part();
+        }
+
+        findedPart.setArticle(partCreateDto.getArticle());
+        findedPart.setBrand(partCreateDto.getBrand());
+        findedPart.setDescription(partCreateDto.getDescription());
+        findedPart.setAmount(partCreateDto.getAmount());
+        findedPart.setPrice(partCreateDto.getPrice());
+        findedPart.setType(PartType.valueOf(partCreateDto.getType()));
+        findedPart.setSize(findedSize);
+        findedPart.setSupplier(supplier);
+
+        return findedPart;
+    }
+
+
+    public User convertToUserEntity(UserCreateDto userCreateDto) {
+        User findedUser = userRepository.findByEmail(userCreateDto.getEmail());
+//        Address address = new Address(0, userCreateDto.getCountry(), userCreateDto.getCity(), userCreateDto.getStreet(),
+//                userCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
+//        Contact contact = new Contact(0, userCreateDto.getFirstName(), userCreateDto.getSecondName(), userCreateDto.getPhone(),
+//                address, ContactType.SUPPLIER, LocalDateTime.now(), LocalDateTime.now());
+
+        if (findedUser == null) {
+            findedUser = new User();
+            findedUser.setEmail(userCreateDto.getEmail());
+            findedUser.setPassword(userCreateDto.getPassword());
+//            findedUser.setContact(contact);
+//            findedUser.getContact().setAddress(address);
+//            findedUser.setUserStatus(UserStatus.valueOf(userCreateDto.getType()));
+            findedUser.setUserRole(UserRole.valueOf(userCreateDto.getUserRole()));
+        }
+        return findedUser;
+    }
+
+    public Supplier convertToSupplierEntity(SupplierCreateDto supplierCreateDto) {
+
+        Supplier findedSupplier = supplierRepository.findByCompanyNameEquals(supplierCreateDto.getCompanyName());
+
+        Address address = new Address(0, supplierCreateDto.getCountry(), supplierCreateDto.getCity(), supplierCreateDto.getStreet(),
+                supplierCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
+
+        Contact contact = new Contact(0, supplierCreateDto.getFirstName(), supplierCreateDto.getSecondName(), supplierCreateDto.getPhone(),
+                address, ContactType.SUPPLIER, LocalDateTime.now(), LocalDateTime.now());
+
+
+        if (findedSupplier == null) {
+
+            findedSupplier = new Supplier();
+            findedSupplier.setCompanyName(supplierCreateDto.getCompanyName());
+            findedSupplier.setSite(supplierCreateDto.getSite());
+            findedSupplier.setContact(contact);
+            findedSupplier.getContact().setAddress(address);
+
+        }
+
+
+        return findedSupplier;
+
+    }
+
+    public Contact convertToContactEntity(ContactCreateDto contactCreateDto) {
+
+
+        Contact findedContact = contactRepository.findContactByPhone(contactCreateDto.getPhone());
+
+        Address address = new Address(0, contactCreateDto.getCountry(), contactCreateDto.getCity(), contactCreateDto.getStreet(),
+                contactCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
+
+        if (findedContact == null) {
+
+            findedContact = new Contact();
+
+            findedContact.setFirstName(contactCreateDto.getFirstName());
+            findedContact.setSecondName(contactCreateDto.getSecondName());
+            findedContact.setPhone(contactCreateDto.getPhone());
+            findedContact.setAddress(address);
+
+        }
+
+
+        return findedContact;
+
+    }
+
+    public Client convertToClientEntity(ClientCreateDto clientCreateDto) {
+        Client findedClient = clientRepository.findClientByContact_Phone(clientCreateDto.getPhone());
+        Address address = new Address(0, clientCreateDto.getCountry(), clientCreateDto.getCity(), clientCreateDto.getStreet(),
+                clientCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
+        Contact contact = new Contact(0, clientCreateDto.getFirstName(), clientCreateDto.getSecondName(), clientCreateDto.getPhone(),
+                address, ContactType.CLIENT, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(0,  clientCreateDto.getEmail(), clientCreateDto.getPassword(), UserRole.CLIENT, UserStatus.ACTIVE,
+                LocalDateTime.now(), LocalDateTime.now());
+        if (findedClient == null) {
+            findedClient = new Client();
+
+
+            findedClient.setUser(user);
+            findedClient.setContact(contact);
+            findedClient.getContact().setAddress(address);
+//            findedClient.getUser().getContact().setAddress(address);
+//            findedClient.getUser().setContact(contact);
+
+
+        }
+        return findedClient;
+
+
+    }
+
+    public List<Client> convertToClientList(List<ClientDto> clientDtoList) {
+        List<Client> clientList = new ArrayList<>();
+        for (int i = 0; i < clientDtoList.size(); i++) {
+            clientList.add(convertToClient(clientDtoList.get(i)));
+        }
+
+        return clientList;
+    }
+
+    public List<ClientDto> convertToClientListDto(List<Client> clients) {
+        List<ClientDto> clientDtoList = new ArrayList<>();
+        for (int i = 0; i < clients.size(); i++) {
+            clientDtoList.add(convertToClientDto(clients.get(i)));
+        }
+        return clientDtoList;
+    }
+
+    public List<User> convertToUserList(List<UserDto> userDtoList) {
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < userDtoList.size(); i++) {
+            userList.add(convertToUser(userDtoList.get(i)));
+        }
+        return userList;
+    }
+
+    public List<UserDto> convertToUserListDto(List<User> userList) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (int i = 0; i < userList.size(); i++) {
+            userDtoList.add(convertToUserDto(userList.get(i)));
+        }
+        return userDtoList;
+    }
+
 
     public List<Part> convertToPartList(List<PartDto> dtoList) {
         List<Part> partList = new ArrayList<>();
@@ -187,26 +396,53 @@ public class BusinessMapper {
         return supplierList;
     }
 
+
+    public List<ContactDto> convertToContactListDto(List<Contact> contacts) {
+        List<ContactDto> contactDtoList = new ArrayList<>();
+        for (int i = 0; i < contacts.size(); i++) {
+            contactDtoList.add(convertToContactDto(contacts.get(i)));
+        }
+        return contactDtoList;
+    }
+
+    public List<Contact> convertToContactList(List<ContactDto> contactDtos) {
+        List<Contact> contactList = new ArrayList<>();
+        for (int i = 0; i < contactDtos.size(); i++) {
+            contactList.add(convertToContact(contactDtos.get(i)));
+
+        }
+        return contactList;
+    }
+
     public AddressDto convertToAddressDto(Address address) {
-        AddressDto addressDto = new AddressDto();
-        addressDto.setId(address.getId());
-        addressDto.setCountry(address.getCountry());
-        addressDto.setCity(address.getCity());
-        addressDto.setStreet(address.getStreet());
-        addressDto.setHouseNumber(address.getHouseNumber());
+        AddressDto addressDto = new AddressDto(address.getId(), address.getCountry(),
+                address.getCity(), address.getStreet(), address.getHouseNumber());
+//        addressDto.setId(address.getId());
+//        addressDto.setCountry(address.getCountry());
+//        addressDto.setCity(address.getCity());
+//        addressDto.setStreet(address.getStreet());
+//        addressDto.setHouseNumber(address.getHouseNumber());
 
         return addressDto;
     }
 
     public ContactDto convertToContactDto(Contact contact) {
-        ContactDto contactDto = new ContactDto();
 
-        contactDto.setAddress(convertToAddressDto(contact.getAddress()));
-        contactDto.setId(contact.getId());
-        contactDto.setFirstName(contact.getFirstName());
-        contactDto.setSecondName(contact.getSecondName());
-        contactDto.setPhone(contact.getPhone());
-        contactDto.setType(contact.getType());
+        ContactDto contactDto = new ContactDto(
+                contact.getId(),
+                contact.getFirstName(),
+                contact.getSecondName(),
+                contact.getPhone(),
+                convertToAddressDto(contact.getAddress()),
+                contact.getType());
+
+
+//        contactDto.setAddress(convertToAddressDto(contact.getAddress()));
+//        contactDto.setId(contact.getId());
+//        contactDto.setFirstName(contact.getFirstName());
+//        contactDto.setSecondName(contact.getSecondName());
+//        contactDto.setPhone(contact.getPhone());
+//        contactDto.setType(contact.getType());
         return contactDto;
 
     }
@@ -227,7 +463,7 @@ public class BusinessMapper {
 
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setContact(convertToContactDto(user.getContact()));
+//        userDto.setContact(convertToContactDto(user.getContact()));
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setUserRole(user.getUserRole());
