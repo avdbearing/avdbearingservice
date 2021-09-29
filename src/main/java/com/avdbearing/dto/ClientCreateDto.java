@@ -8,6 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,14 +21,20 @@ public class ClientCreateDto {
     private long id;
     private String firstName;
     private String secondName;
+    @NotNull
+    @Size(min = 10, max = 13)
     private String phone;
     private String type;
     private String country;
     private String city;
     private String street;
     private int houseNumber;
+    @Email(message = "Email address has invalid format: ${validatedValue}",
+            regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
     private String email;
     private String password;
     private String userRole;
     private String userStatus;
+
+
 }

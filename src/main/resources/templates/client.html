@@ -25,11 +25,10 @@
                     <div class="col-sm-6  text-md-end  ">
 
 
-                        <a href="#addModal" class="add" data-bs-tittle="modal">
+                        <a th:href="@{/client/create}" class="add ">
                             <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="add">
-                                <button type="button" class="btn btn-success " data-bs-toggle="modal"
-                                        data-bs-target="#addModal">Add
-                                    Client
+                                <button type="button" class="btn btn-success ">
+                                    Add Client
                                 </button>
                             </i>
                         </a>
@@ -82,8 +81,8 @@
                     <td th:text="${client.user.email}"/>
                     <td th:text="${client.user.password}"/>
                     <td th:text="${client.user.userStatus}"/>
-                    
-<!--                    <td th:text="${client.user.userStatus}"/>-->
+
+                    <!--                    <td th:text="${client.user.userStatus}"/>-->
 
 
                     <td><a th:href="@{/client/delete/{id}(id=${client.getId()})}" class="btn btn-danger">Delete</a>
@@ -259,18 +258,18 @@
                             <input th:field="*{password}" type="text" name="house_number" class="form-control"
                                    required>
                         </div>
-<!--                        <div class="form-group">-->
-<!--                            <label>Status</label>-->
-<!--                            <select th:field="*{userStatus}" class="form-select form-select-sm" name="supplier_id"-->
-<!--                                    aria-label=".form-select-sm example">-->
-<!--                                <option value="none">choose status</option>-->
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select th:field="*{userStatus}" class="form-select form-select-sm" name="supplier_id"
+                                    aria-label=".form-select-sm example">
+                                <option value="none">choose status</option>
 
-<!--                                <option th:each="client:${clients}" th:value="${client.user.userStatus}"-->
-<!--                                        th:text="${client.user.userStatus}"></option>-->
+                                <option th:each="client:${clients}" th:value="${client.user.getUserStatus()}"
+                                        th:text="${client.user.getUserStatus()}"></option>
 
 
-<!--                            </select>-->
-<!--                        </div>-->
+                            </select>
+                        </div>
 
                     </div>
                 </div>
