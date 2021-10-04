@@ -29,8 +29,8 @@ public class ClientCreateDto {
     private String city;
     private String street;
     private int houseNumber;
-    @Email(message = "Email address has invalid format: ${validatedValue}",
-            regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+    @NotNull
+    @Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
     private String email;
     private String password;
     private String userRole;

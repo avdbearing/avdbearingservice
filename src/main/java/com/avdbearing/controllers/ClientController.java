@@ -26,7 +26,8 @@ public class ClientController {
     public String createClient(@Valid ClientCreateDto clientCreateDto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()){
-            return "redirect:/client/create";
+            System.out.println("error: "+bindingResult.getFieldError().getField());
+            return "addClient";
         }
 
         clientService.addClient(clientCreateDto);
