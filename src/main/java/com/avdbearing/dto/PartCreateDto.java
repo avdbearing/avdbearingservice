@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 @ToString
 public class PartCreateDto {
 
+    @NotNull
+    @Size(min = 2, max = 100)
     private String article;
     private String brand;
     private int amount;
@@ -27,8 +29,6 @@ public class PartCreateDto {
     @Size(min = 2, max = 100)
     private String description;
     private String supplierName;
-
-
 
 
 }
