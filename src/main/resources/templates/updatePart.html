@@ -9,16 +9,14 @@
 <body>
 
 
-<div class="modal-dialog">
-    <div class="modal-content">
+<div class="container w-50 mt-5">
+    <div class="card">
 
         <form th:action="@{/part/update}" method="post" th:object="${currentPart}">
 
-            <div class="modal-header">
+            <div class="card-header">
                 <h4 class="modal-title">Edit Part</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
 
-                </button>
             </div>
             <div class="modal-body">
 
@@ -56,12 +54,18 @@
                            class="form-control"
                            required>
                 </div>
-                <div class="form-group">
-                    <label>Type</label>
-                    <input type="text" name="type" th:field="*{type}"
-                           class="form-control"
-                           required>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label>Type</label>-->
+<!--                    <select th:field="*{type}" class="form-select form-select-sm" name="supplier_id"-->
+<!--                            aria-label=".form-select-sm example">-->
+<!--                        <option value="none">choose type</option>-->
+
+<!--                        <option th:each="type:${partTypes}" th:value="${type.name()}"-->
+<!--                                th:text="${type.name()}"></option>-->
+
+
+<!--                    </select>-->
+<!--                </div>-->
                 <div class="form-group">
                     <label>Inner</label>
                     <input type="text" name="inner"
@@ -81,15 +85,22 @@
                 </div>
                 <div class="form-group">
                     <label>Supplier</label>
-                    <input type="text" name="name_company"
-                           th:field="*{supplier}"
-                           class="form-control" required>
+                    <select th:field="*{supplier}" class="form-select form-select-sm" name="supplier_id"
+                            aria-label=".form-select-sm example">
+                        <option value="none">choose supplier</option>
+
+                        <option th:each="supplier:${suppliers}" th:value="${suppliers.supplier}"
+                                th:text="${suppliers.supplier}"></option>
+
+
+                    </select>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-danger" value="Cancel">
                 <button type="submit" class="btn btn-success">save</button>
+                <a th:href="@{/part/all}" class="btn btn-danger">Back</a>
+
             </div>
 
         </form>

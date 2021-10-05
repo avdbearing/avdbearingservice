@@ -73,7 +73,7 @@ class AppStartupRunner implements ApplicationRunner {
 
 //        userService.addUser(new UserCreateDto("client@gmail.com", "qwerty", "CLIENT", "NEW"));
 
-        clientService.addClient(new ClientCreateDto(0, "serg", "serg", "+32423423423", "CLIENT", "ukraine", "kiev",
+        clientService.addClient(new ClientCreateDto("serg", "serg", "+32423423423", "CLIENT", "ukraine", "kiev",
                 "kievska", 5, "serg@", "qwerty", "CLIENT", "NEW"));
 
     }

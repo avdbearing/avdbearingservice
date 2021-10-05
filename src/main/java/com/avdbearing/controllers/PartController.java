@@ -6,12 +6,12 @@ import com.avdbearing.dto.PartDto;
 import com.avdbearing.services.PartService;
 import com.avdbearing.services.SupplierService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.websocket.server.PathParam;
-import java.util.stream.LongStream;
+import javax.validation.Valid;
 
 
 @Controller
@@ -24,10 +24,29 @@ public class PartController {
     private SupplierService supplierService;
 
     @PostMapping("/create")
-    public String createPart(@ModelAttribute("newPart") PartCreateDto partCreateDto) {
+    public String createPart(@Valid PartCreateDto partCreateDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("error: " + bindingResult.getFieldError().getField());
+            return "addPart";
+        }
+
         partService.addPart(partCreateDto);
-//        System.out.println(partCreateDto);
+        System.out.println(partCreateDto);
         return "redirect:/part/all";
+    }
+
+
+    @GetMapping("/create")
+    public ModelAndView createPart() {
+        ModelAndView modelAndView = new ModelAndView("addPart");
+        modelAndView.addObject("suppliers", supplierService.getAll());
+        modelAndView.addObject("newPart", new PartCreateDto());
+        modelAndView.addObject("partTypes", PartType.values());
+
+        System.out.println("/create inside");
+        return modelAndView;
+
     }
 
 
@@ -77,22 +96,5 @@ public class PartController {
     }
 
 
-//    @PostMapping(name = "/create")
-//    protected void createPart(HttpServletRequest req, HttpServletResponse resp) {
-//        String article = req.getParameter("article");
-//        String brand = req.getParameter("brand");
-//        String description = req.getParameter("description");
-//        String price = req.getParameter("price");
-//        String type = req.getParameter("type");
-//        String inner = req.getParameter("inner");
-//        String outer = req.getParameter("outer");
-//        String width = req.getParameter("width");
-//        String supplier = req.getParameter("supplier");
-//
-//
-//        PartDto partDto = new PartDto(inner, outer, width, article,
-//                brand, description, price, type, supplier);
-//
-//        System.out.println(partDto);
-//    }
+
 }

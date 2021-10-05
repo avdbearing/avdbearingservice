@@ -1,10 +1,18 @@
 package com.avdbearing.dto;
 
-import com.avdbearing.domain.Enum.PartType;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
-
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class PartCreateDto {
 
     private String article;
@@ -15,22 +23,12 @@ public class PartCreateDto {
     private double outer;
     private double width;
     private double price;
+    @NotNull
+    @Size(min = 2, max = 100)
     private String description;
     private String supplierName;
 
 
-//    public PartDto(String inner, String outer, String width, String article,
-//                   String brand, String description, String price, String type,
-//                   String companyName) {
-//
-//        this.size = new SizeDto(Double.parseDouble(inner), Double.parseDouble(outer), Double.parseDouble(width));
-//        this.article = article;
-//        this.brand = brand;
-//        this.description = description;
-//        this.price = Double.parseDouble(price);
-//        this.type = PartType.valueOf(type);
-//        this.supplier = new SupplierDto(companyName);
-//    }
 
 
 }
