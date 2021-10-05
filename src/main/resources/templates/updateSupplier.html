@@ -9,18 +9,17 @@
 <body>
 
 
-<div class="modal-dialog">
-    <div class="modal-content">
+<div class="container w-50 mt-5">
+    <div class="card">
 
         <form th:action="@{/supplier/update}" method="post" th:object="${currentSupplier}">
 
-            <div class="modal-header">
+            <div class="card-header">
                 <h4 class="modal-title">Edit Supplier</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
 
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="card-body">
 
                 <input type="number" name="supplier_id" hidden="hidden" th:field="*{id}" class="form-control">
 
@@ -83,9 +82,10 @@
 
 
             </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-danger" value="Cancel">
+            <div class="card-footer">
+
                 <button type="submit" class="btn btn-success">save</button>
+                <a th:href="@{/supplier/all}" class="btn btn-danger">Back</a>
             </div>
 
         </form>

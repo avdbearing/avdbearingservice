@@ -54,18 +54,12 @@
                            class="form-control"
                            required>
                 </div>
-<!--                <div class="form-group">-->
-<!--                    <label>Type</label>-->
-<!--                    <select th:field="*{type}" class="form-select form-select-sm" name="supplier_id"-->
-<!--                            aria-label=".form-select-sm example">-->
-<!--                        <option value="none">choose type</option>-->
-
-<!--                        <option th:each="type:${partTypes}" th:value="${type.name()}"-->
-<!--                                th:text="${type.name()}"></option>-->
-
-
-<!--                    </select>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" name="type" th:field="*{type}"
+                           class="form-control"
+                           required>
+                </div>
                 <div class="form-group">
                     <label>Inner</label>
                     <input type="text" name="inner"
@@ -89,8 +83,8 @@
                             aria-label=".form-select-sm example">
                         <option value="none">choose supplier</option>
 
-                        <option th:each="supplier:${suppliers}" th:value="${suppliers.supplier}"
-                                th:text="${suppliers.supplier}"></option>
+                        <option th:each="supplier:${suppliers}" th:value="${supplier.companyName}"
+                                th:text="${supplier.companyName}"></option>
 
 
                     </select>

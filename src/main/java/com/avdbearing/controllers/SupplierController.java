@@ -5,10 +5,12 @@ import com.avdbearing.dto.SupplierCreateDto;
 import com.avdbearing.dto.SupplierDto;
 import com.avdbearing.services.SupplierService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/supplier")
@@ -18,10 +20,24 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @PostMapping("/create")
-    public String createSupplier(@ModelAttribute("newSupplier") SupplierCreateDto supplierCreateDto) {
+    public String createSupplier(@Valid SupplierCreateDto supplierCreateDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("error: " + bindingResult.getFieldError().getField());
+            return "addSupplier";
+        }
+
         supplierService.addSupplier(supplierCreateDto);
         System.out.println(supplierCreateDto);
         return "redirect:/supplier/all";
+    }
+
+    @GetMapping("/create")
+    public ModelAndView createSupplier() {
+        ModelAndView modelAndView = new ModelAndView("addSupplier");
+        modelAndView.addObject("newSupplier", new SupplierCreateDto());
+
+        return modelAndView;
     }
 
     @GetMapping("/all")

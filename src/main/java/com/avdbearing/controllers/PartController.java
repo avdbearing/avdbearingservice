@@ -80,7 +80,7 @@ public class PartController {
 
         ModelAndView modelAndView = new ModelAndView("updatePart");
         modelAndView.addObject("currentPart", partService.getPartById(id));
-
+        modelAndView.addObject("suppliers", supplierService.getAll());
 
         return modelAndView;
 

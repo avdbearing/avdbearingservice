@@ -11,11 +11,11 @@
     <title>Add client</title>
 </head>
 <body>
-<div class="container">
+<div class="container w-50 mt-5">
 
     <div class="card">
 
-        <form th:action="@{/supplier/create}" method="post" th:object="${supplierCreateDto}">
+        <form th:action="@{/supplier/create}" method="post" th:object="${newSupplier}">
             <div class="card-header">
                 <h4 class="modal-title">Add Supplier</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
@@ -69,8 +69,9 @@
             </div>
 
             <div class="modal-footer">
-                <input type="button" class="btn btn-danger" data-bs-dismiss="modal" value="close">
+
                 <button type="submit" class="btn btn-success">Add</button>
+                <a th:href="@{/supplier/all}" class="btn btn-danger">Back</a>
             </div>
         </form>
     </div>
