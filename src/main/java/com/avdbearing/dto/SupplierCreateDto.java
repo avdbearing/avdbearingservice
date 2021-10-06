@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 @Data
@@ -15,15 +16,32 @@ import javax.validation.constraints.Pattern;
 @ToString
 public class SupplierCreateDto {
 
+    @NotNull
+    @Size(min = 2, max = 100)
+    private String companyName;
+    @NotNull
+    @Size(min = 2, max = 100)
+    private String site;
+    @NotNull
+    @Size(min = 2, max = 100)
     private String firstName;
+    @NotNull
+    @Size(min = 2, max = 100)
     private String secondName;
+    @NotNull
+    @Size(min = 10, max = 17)
     private String phone;
     private String type;
+    @NotNull
+    @Size(min = 1, max = 40)
     private String country;
+    @NotNull
+    @Size(min = 1, max = 40)
     private String city;
+    @NotNull
+    @Size(min = 1, max = 40)
     private String street;
+
     private int houseNumber;
-    private String companyName;
-    private String site;
     private boolean isForeign;
 }

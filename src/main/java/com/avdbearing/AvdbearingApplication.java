@@ -54,27 +54,45 @@ class AppStartupRunner implements ApplicationRunner {
 
         Size firstSize = new Size(1, 22, 33, 44);
         sizeRepository.save(firstSize);
+        Size secondSize = new Size(2, 11, 1, 22);
+        sizeRepository.save(firstSize);
+        sizeRepository.save(secondSize);
         Address address = new Address(1, "poland", "krakov", "krakovska", 4,
                 LocalDateTime.now(), LocalDateTime.now());
         addressRepository.save(address);
+        Address address1 = new Address(2, "ukraine", "lutsk", "lutska", 3,
+                LocalDateTime.now(), LocalDateTime.now());
+        addressRepository.save(address1);
+
 
         Contact contact = new Contact(1, "kirill", "nakazny", "+380674445533",
                 address, ContactType.SUPPLIER, LocalDateTime.now(), LocalDateTime.now());
         contactRepository.save(contact);
+        Contact contact1 = new Contact(2, "vitalii", "vitalii", "+380634445544",
+                address1, ContactType.SUPPLIER, LocalDateTime.now(), LocalDateTime.now());
+        contactRepository.save(contact1);
 
         Supplier supplier = new Supplier(1, contact, "motogama", "moto.com",
                 true, LocalDateTime.now(), LocalDateTime.now());
         supplierRepository.save(supplier);
+        Supplier supplier1 = new Supplier(2, contact1, "psv", "psv.com",
+                true, LocalDateTime.now(), LocalDateTime.now());
+        supplierRepository.save(supplier1);
 
         Part firstPart = new Part(1, firstSize, "6203", "SNR", 2, "bearing",
                 23, PartType.BEARING, supplier, true, LocalDateTime.now(), LocalDateTime.now());
 
         partRepository.save(firstPart);
 
-//        userService.addUser(new UserCreateDto("client@gmail.com", "qwerty", "CLIENT", "NEW"));
+        Part part1 = new Part(2, secondSize, "12017115b", "corteco", 4, "oilseal",
+                12, PartType.OILSEAL, supplier1, true, LocalDateTime.now(), LocalDateTime.now());
+
+        partRepository.save(part1);
 
         clientService.addClient(new ClientCreateDto("serg", "serg", "+32423423423", "CLIENT", "ukraine", "kiev",
                 "kievska", 5, "serg@", "qwerty", "CLIENT", "NEW"));
+        clientService.addClient(new ClientCreateDto("nik", "nik", "+380675558844", "CLIENT", "ukraine", "kiev",
+                "ekskovatorna", 24, "nik@", "sdfd", "CLIENT", "NEW"));
 
     }
 

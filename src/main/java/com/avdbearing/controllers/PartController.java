@@ -81,6 +81,7 @@ public class PartController {
         ModelAndView modelAndView = new ModelAndView("updatePart");
         modelAndView.addObject("currentPart", partService.getPartById(id));
         modelAndView.addObject("suppliers", supplierService.getAll());
+        modelAndView.addObject("partTypes", PartType.values());
 
         return modelAndView;
 

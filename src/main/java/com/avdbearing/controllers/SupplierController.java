@@ -24,7 +24,9 @@ public class SupplierController {
 
         if (bindingResult.hasErrors()) {
             System.out.println("error: " + bindingResult.getFieldError().getField());
+
             return "addSupplier";
+
         }
 
         supplierService.addSupplier(supplierCreateDto);
@@ -33,11 +35,12 @@ public class SupplierController {
     }
 
     @GetMapping("/create")
-    public ModelAndView createSupplier() {
-        ModelAndView modelAndView = new ModelAndView("addSupplier");
-        modelAndView.addObject("newSupplier", new SupplierCreateDto());
+    public String createSupplier(SupplierCreateDto supplierCreateDto) {
+//        ModelAndView modelAndView = new ModelAndView("addSupplier");
+//        modelAndView.addObject("newSupplier", new SupplierCreateDto());
 
-        return modelAndView;
+        System.out.println("create inside");
+        return "addSupplier";
     }
 
     @GetMapping("/all")
@@ -76,6 +79,7 @@ public class SupplierController {
         supplierService.updateSupplier(supplierDto);
 
         return "redirect:/supplier/all";
+
     }
 
 

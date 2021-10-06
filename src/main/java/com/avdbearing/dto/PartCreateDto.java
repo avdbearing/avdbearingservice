@@ -18,6 +18,8 @@ public class PartCreateDto {
     @NotNull
     @Size(min = 2, max = 100)
     private String article;
+    @NotNull
+    @Size(min = 1, max = 100)
     private String brand;
     private int amount;
     private String type;

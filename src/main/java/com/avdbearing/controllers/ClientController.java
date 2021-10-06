@@ -25,8 +25,8 @@ public class ClientController {
     @PostMapping("/create")
     public String createClient(@Valid ClientCreateDto clientCreateDto, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()){
-            System.out.println("error: "+bindingResult.getFieldError().getField());
+        if (bindingResult.hasErrors()) {
+            System.out.println("error: " + bindingResult.getFieldError().getField());
             return "addClient";
         }
 
@@ -36,9 +36,14 @@ public class ClientController {
     }
 
     @GetMapping("/create")
-    public String createClient(ClientCreateDto clientCreateDto) {
+    public ModelAndView createClient() {
+
+        ModelAndView modelAndView = new ModelAndView("addClient");
+        modelAndView.addObject("newClient", new ClientCreateDto());
+        modelAndView.addObject("type", UserStatus.values());
+
         System.out.println("/create inside");
-        return "addClient";
+        return modelAndView;
     }
 
 
@@ -47,7 +52,7 @@ public class ClientController {
         ModelAndView modelAndView = new ModelAndView("client");
         modelAndView.addObject("clients", clientService.getAll());
         modelAndView.addObject("newClient", new ClientCreateDto());
-
+        modelAndView.addObject("type", UserStatus.values());
 
         System.out.println("all clients");
 
@@ -66,6 +71,7 @@ public class ClientController {
 
         ModelAndView modelAndView = new ModelAndView("updateClient");
         modelAndView.addObject("currentClient", clientService.getClientById(id));
+        modelAndView.addObject("types", UserStatus.values());
 
         return modelAndView;
 
