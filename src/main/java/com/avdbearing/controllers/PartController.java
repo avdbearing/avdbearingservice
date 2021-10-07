@@ -88,14 +88,18 @@ public class PartController {
     }
 
     @PostMapping("/update")
-    public String updatePart(@ModelAttribute("currentPart") PartDto partDto) {
+    public String updatePart(@Valid PartDto partDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("error: " + bindingResult.getFieldError().getField());
+            return "redirect:/part/update/" + partDto.getId();
+        }
 
         partService.updatePart(partDto);
 
 
         return "redirect:/part/all";
     }
-
 
 
 }

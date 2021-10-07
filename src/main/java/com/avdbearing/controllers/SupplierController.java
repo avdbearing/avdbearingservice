@@ -79,7 +79,6 @@ public class SupplierController {
         supplierService.updateSupplier(supplierDto);
 
         return "redirect:/supplier/all";
-
     }
 
 

@@ -29,7 +29,7 @@ public class SupplierCreateDto {
     @Size(min = 2, max = 100)
     private String secondName;
     @NotNull
-    @Size(min = 10, max = 17)
+    @Pattern(regexp = "[0-9]{10,13}", message = "wrong phone number format")
     private String phone;
     private String type;
     @NotNull
