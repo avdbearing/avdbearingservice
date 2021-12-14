@@ -17,9 +17,8 @@ public class PartDto {
     @NotNull
     @Size(min = 2, max = 100 , message = "error article")
     private String article;
-    @NotNull
-    @Size(min = 1, max = 100)
-    private String brand;
+
+    private BrandDto brandDto;
     private int amount;
     private String type;
     private SizeDto sizeDto;

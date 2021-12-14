@@ -5,19 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+public class BrandCreateDto {
+    @NotNull
+    @Size(min = 2, max = 100)
+    private String brandName;
 
-public class AddressDto {
-
-    private long id;
-    private String country;
-    private String city;
-    private String street;
-    private int houseNumber;
 
 }

@@ -5,19 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+public class FileFieldsOrder {
 
-public class AddressDto {
+private List<Field> fields = new ArrayList<>();
 
-    private long id;
-    private String country;
-    private String city;
-    private String street;
-    private int houseNumber;
 
 }

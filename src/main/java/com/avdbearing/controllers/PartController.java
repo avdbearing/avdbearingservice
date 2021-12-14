@@ -3,6 +3,7 @@ package com.avdbearing.controllers;
 import com.avdbearing.domain.Enum.PartType;
 import com.avdbearing.dto.PartCreateDto;
 import com.avdbearing.dto.PartDto;
+import com.avdbearing.services.BrandService;
 import com.avdbearing.services.PartService;
 import com.avdbearing.services.SupplierService;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,9 @@ public class PartController {
     private PartService partService;
     @Resource
     private SupplierService supplierService;
+    @Resource
+    private BrandService brandService;
+
 
     @PostMapping("/create")
     public String createPart(@Valid PartCreateDto partCreateDto, BindingResult bindingResult) {
@@ -41,6 +45,7 @@ public class PartController {
     public ModelAndView createPart() {
         ModelAndView modelAndView = new ModelAndView("addPart");
         modelAndView.addObject("suppliers", supplierService.getAll());
+        modelAndView.addObject("brands", brandService.getAll());
         modelAndView.addObject("newPart", new PartCreateDto());
         modelAndView.addObject("partTypes", PartType.values());
 
@@ -54,6 +59,7 @@ public class PartController {
     public ModelAndView getAll() {
         ModelAndView modelAndView = new ModelAndView("parts");
         modelAndView.addObject("suppliers", supplierService.getAll());
+        modelAndView.addObject("brands", brandService.getAll());
         modelAndView.addObject("newPart", new PartCreateDto());
         modelAndView.addObject("parts", partService.getAll());
         modelAndView.addObject("partTypes", PartType.values());
@@ -80,6 +86,7 @@ public class PartController {
 
         ModelAndView modelAndView = new ModelAndView("updatePart");
         modelAndView.addObject("currentPart", partService.getPartById(id));
+        modelAndView.addObject("brands", brandService.getAll());
         modelAndView.addObject("suppliers", supplierService.getAll());
         modelAndView.addObject("partTypes", PartType.values());
 

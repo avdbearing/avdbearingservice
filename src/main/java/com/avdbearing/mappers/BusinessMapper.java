@@ -8,12 +8,12 @@ import com.avdbearing.domain.Enum.PartType;
 import com.avdbearing.domain.Enum.UserRole;
 import com.avdbearing.domain.Enum.UserStatus;
 import com.avdbearing.domain.User;
+import com.avdbearing.domain.core.Brand;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
 import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.*;
 import com.avdbearing.repositories.*;
-import com.avdbearing.services.UserService;
 
 
 import javax.annotation.Resource;
@@ -33,9 +33,10 @@ public class BusinessMapper {
     ContactRepository contactRepository;
     @Resource
     ClientRepository clientRepository;
-
     @Resource
     UserRepository userRepository;
+    @Resource
+    BrandRepository brandRepository;
 
 
     public Size convertToSize(SizeDto sizeDto) {
@@ -46,6 +47,21 @@ public class BusinessMapper {
         size.setWidth(sizeDto.getWidth());
 
         return size;
+    }
+
+    public Brand convertToBrand(BrandDto brandDto) {
+        Brand brand = new Brand();
+        brand.setId(brandDto.getId());
+        brand.setBrandName(brandDto.getBrandName());
+        return brand;
+    }
+
+    public BrandDto convertToBrandDto(Brand brand) {
+        BrandDto brandDto = new BrandDto();
+        brandDto.setId(brand.getId());
+        brandDto.setBrandName(brand.getBrandName());
+
+        return brandDto;
     }
 
     public Address convertToAddress(AddressDto addressDto) {
@@ -120,9 +136,9 @@ public class BusinessMapper {
         PartDto partDto = new PartDto();
         partDto.setId(part.getId());
         partDto.setSizeDto(convertToSizeDto(part.getSize()));
-
+        partDto.setBrandDto(convertToBrandDto(part.getBrand()));
         partDto.setArticle(part.getArticle());
-        partDto.setBrand(part.getBrand());
+
         partDto.setAmount(part.getAmount());
         partDto.setDescription(part.getDescription());
         partDto.setPrice(part.getPrice());
@@ -144,7 +160,7 @@ public class BusinessMapper {
         part.setId(partDto.getId());
         part.setSize(convertToSize(partDto.getSizeDto()));
         part.setArticle(partDto.getArticle());
-        part.setBrand(partDto.getBrand());
+        part.setBrand(convertToBrand(partDto.getBrandDto()));
         part.setAmount(partDto.getAmount());
         part.setDescription(partDto.getDescription());
         part.setPrice(partDto.getPrice());
@@ -158,9 +174,9 @@ public class BusinessMapper {
 
         PartDto partDto = new PartDto();
         SizeDto sizeDto = new SizeDto(0, partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
+        BrandDto brandDto = new BrandDto(0, partCreateDto.getBrandName());
 
         partDto.setArticle(partCreateDto.getArticle());
-        partDto.setBrand(partCreateDto.getBrand());
         partDto.setDescription(partCreateDto.getDescription());
         partDto.setAmount(partCreateDto.getAmount());
         partDto.setPrice(partCreateDto.getPrice());
@@ -192,7 +208,8 @@ public class BusinessMapper {
 
     public Part convertToPartEntity(PartCreateDto partCreateDto) {
 
-        Part findedPart = partRepository.findByBrandAndArticle(partCreateDto.getBrand(), partCreateDto.getArticle());
+        Part findedPart = partRepository.findByBrandAndArticle(partCreateDto.getBrandName(), partCreateDto.getArticle());
+        Brand findedBrand = brandRepository.findBrandByBrandName(partCreateDto.getBrandName());
         Supplier supplier = supplierRepository.findByCompanyNameEquals(partCreateDto.getSupplierName());
         Size findedSize = sizeRepository.findByInnerAndOuterAndWidth(partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
 
@@ -204,7 +221,7 @@ public class BusinessMapper {
         }
 
         findedPart.setArticle(partCreateDto.getArticle());
-        findedPart.setBrand(partCreateDto.getBrand());
+        findedPart.setBrand(findedBrand);
         findedPart.setDescription(partCreateDto.getDescription());
         findedPart.setAmount(partCreateDto.getAmount());
         findedPart.setPrice(partCreateDto.getPrice());
@@ -213,6 +230,17 @@ public class BusinessMapper {
         findedPart.setSupplier(supplier);
 
         return findedPart;
+    }
+
+    public Brand convertToBrandEntity(BrandCreateDto brandCreateDto) {
+        Brand findedBrand = brandRepository.findBrandByBrandName(brandCreateDto.getBrandName());
+        if (findedBrand == null) {
+            findedBrand = new Brand(0, brandCreateDto.getBrandName(), LocalDateTime.now(), LocalDateTime.now());
+        }
+
+        return findedBrand;
+
+
     }
 
 
@@ -291,7 +319,7 @@ public class BusinessMapper {
                 clientCreateDto.getHouseNumber(), LocalDateTime.now(), LocalDateTime.now());
         Contact contact = new Contact(0, clientCreateDto.getFirstName(), clientCreateDto.getSecondName(), clientCreateDto.getPhone(),
                 address, ContactType.CLIENT, LocalDateTime.now(), LocalDateTime.now());
-        User user = new User(0,  clientCreateDto.getEmail(), clientCreateDto.getPassword(), UserRole.CLIENT,UserStatus.NEW,
+        User user = new User(0, clientCreateDto.getEmail(), clientCreateDto.getPassword(), UserRole.CLIENT, UserStatus.NEW,
                 LocalDateTime.now(), LocalDateTime.now());
         if (findedClient == null) {
             findedClient = new Client();
@@ -300,8 +328,6 @@ public class BusinessMapper {
             findedClient.setUser(user);
             findedClient.setContact(contact);
             findedClient.getContact().setAddress(address);
-//            findedClient.getUser().getContact().setAddress(address);
-//            findedClient.getUser().setContact(contact);
 
 
         }
@@ -372,6 +398,23 @@ public class BusinessMapper {
         }
 
         return partDtoList;
+    }
+
+
+    public List<Brand> convertToBrandList(List<BrandDto> brandDtos) {
+        List<Brand> brands = new ArrayList<>();
+        for (int i = 0; i < brandDtos.size(); i++) {
+            brands.add(convertToBrand(brandDtos.get(i)));
+        }
+        return brands;
+    }
+
+    public List<BrandDto> convertToBrandListDto(List<Brand> brands) {
+        List<BrandDto> brandDtoList = new ArrayList<>();
+        for (int i = 0; i < brands.size(); i++) {
+            brandDtoList.add(convertToBrandDto(brands.get(i)));
+        }
+        return brandDtoList;
     }
 
     public List<SupplierDto> convertToSupplierListDto(List<Supplier> suppliers) {

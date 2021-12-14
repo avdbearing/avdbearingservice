@@ -1,6 +1,6 @@
 package com.avdbearing.services;
 
-import com.avdbearing.domain.Enum.PartType;
+
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.dto.PartCreateDto;
 import com.avdbearing.dto.PartDto;
@@ -21,6 +21,8 @@ public class PartsServiceImpl implements PartService {
     private SizeRepository sizeRepository;
     @Resource
     private SupplierRepository supplierRepository;
+    @Resource
+    private BrandRepository brandRepository;
 
 
     @Override
@@ -43,6 +45,7 @@ public class PartsServiceImpl implements PartService {
 
         supplierRepository.save(part.getSupplier());
         sizeRepository.save(part.getSize());
+        brandRepository.save(part.getBrand());
         partRepository.save(part);
 
 
@@ -64,6 +67,7 @@ public class PartsServiceImpl implements PartService {
 
         sizeRepository.save(entityPart.getSize());
         supplierRepository.save(entityPart.getSupplier());
+        brandRepository.save(entityPart.getBrand());
         partRepository.save(entityPart);
 
 

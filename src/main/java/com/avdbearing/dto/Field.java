@@ -5,19 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+public class Field {
 
-public class AddressDto {
+    private int columnPosition;
+    private String columnName;
 
-    private long id;
-    private String country;
-    private String city;
-    private String street;
-    private int houseNumber;
 
 }

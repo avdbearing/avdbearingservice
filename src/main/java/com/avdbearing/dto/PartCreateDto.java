@@ -20,7 +20,7 @@ public class PartCreateDto {
     private String article;
     @NotNull
     @Size(min = 1, max = 100)
-    private String brand;
+    private String brandName;
     private int amount;
     private String type;
     private double inner;

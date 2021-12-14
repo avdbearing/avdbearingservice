@@ -27,8 +27,11 @@ public class Part {
     private Size size;
     @Column(nullable = false)
     private String article;
-    @Column(nullable = false)
-    private String brand;
+
+
+    @OneToOne
+    private Brand brand;
+
     @Column(nullable = false)
     private int amount;
     @Column(nullable = false)

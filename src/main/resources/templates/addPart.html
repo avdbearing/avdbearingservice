@@ -28,9 +28,12 @@
                 </div>
                 <div class="form-group">
                     <label>Brand</label>
-                    <input th:field="*{brand}" type="text" name="brand" class="form-control" required
-                           placeholder="Enter brand">
-                    <label th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</label>
+                    <input th:field="*{brandName}" type="text" name="brand" class="form-control" required
+                           placeholder="Enter brand" name="brand_id">
+                    <option value="none">choose brand</option>
+
+                    <option th:each="brand:${brands}" th:value="${brand.brandName}"
+                            th:text="${brand.brandName}"></option>
 
                 </div>
                 <div class="form-group">

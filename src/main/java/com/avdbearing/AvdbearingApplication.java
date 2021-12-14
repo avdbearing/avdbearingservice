@@ -4,6 +4,7 @@ import com.avdbearing.domain.Address;
 import com.avdbearing.domain.Contact;
 import com.avdbearing.domain.Enum.ContactType;
 import com.avdbearing.domain.Enum.PartType;
+import com.avdbearing.domain.core.Brand;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
 import com.avdbearing.domain.core.Supplier;
@@ -11,6 +12,7 @@ import com.avdbearing.dto.ClientCreateDto;
 import com.avdbearing.dto.UserCreateDto;
 import com.avdbearing.dto.UserDto;
 import com.avdbearing.repositories.*;
+import com.avdbearing.services.BrandService;
 import com.avdbearing.services.ClientService;
 import com.avdbearing.services.UserService;
 import org.springframework.boot.ApplicationArguments;
@@ -32,6 +34,7 @@ public class AvdbearingApplication {
 }
 
 
+
 @Component
 class AppStartupRunner implements ApplicationRunner {
     @Resource
@@ -48,6 +51,10 @@ class AppStartupRunner implements ApplicationRunner {
     UserService userService;
     @Resource
     ClientService clientService;
+    @Resource
+    BrandService brandService;
+    @Resource
+    BrandRepository brandRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -57,6 +64,12 @@ class AppStartupRunner implements ApplicationRunner {
         Size secondSize = new Size(2, 11, 1, 22);
         sizeRepository.save(firstSize);
         sizeRepository.save(secondSize);
+
+        Brand brand1 = new Brand(1,"SNR",LocalDateTime.now(), LocalDateTime.now());
+        brandRepository.save(brand1);
+        Brand brand2 = new Brand(2,"NSK",LocalDateTime.now(), LocalDateTime.now());
+        brandRepository.save(brand2);
+
         Address address = new Address(1, "poland", "krakov", "krakovska", 4,
                 LocalDateTime.now(), LocalDateTime.now());
         addressRepository.save(address);
@@ -79,12 +92,12 @@ class AppStartupRunner implements ApplicationRunner {
                 true, LocalDateTime.now(), LocalDateTime.now());
         supplierRepository.save(supplier1);
 
-        Part firstPart = new Part(1, firstSize, "6203", "SNR", 2, "bearing",
+        Part firstPart = new Part(1, firstSize, "6203", brand1, 2, "bearing",
                 23, PartType.BEARING, supplier, true, LocalDateTime.now(), LocalDateTime.now());
 
         partRepository.save(firstPart);
 
-        Part part1 = new Part(2, secondSize, "12017115b", "corteco", 4, "oilseal",
+        Part part1 = new Part(2, secondSize, "12017115b", brand2, 4, "oilseal",
                 12, PartType.OILSEAL, supplier1, true, LocalDateTime.now(), LocalDateTime.now());
 
         partRepository.save(part1);
