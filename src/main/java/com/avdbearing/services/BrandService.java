@@ -3,7 +3,7 @@ package com.avdbearing.services;
 import com.avdbearing.domain.core.Brand;
 import com.avdbearing.dto.BrandCreateDto;
 import com.avdbearing.dto.BrandDto;
-import com.avdbearing.dto.PartDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,4 +20,12 @@ public interface BrandService {
     void deleteBrandById(long id);
 
     List<BrandDto> getAll();
+
+    void save(Brand brand);
+
+    long getTotal();
+
+    Page<Brand> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection);
+
+
 }

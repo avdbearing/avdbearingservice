@@ -41,10 +41,18 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">BrandName</th>
+
+
+                    <th scope="col"><a
+                            th:href="@{ ${currentPage} + '?sort-field=id&sort-dir=' + ${reverseSortDir}}">Id</a>
+                    </th>
+                    <th scope="col"><a
+                            th:href="@{ ${currentPage} + '?sort-field=brandName&sort-dir=' + ${reverseSortDir}}">Brand
+                        name</a>
+                    </th>
                     <th scope="col">Delete</th>
                     <th scope="col">Edit</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -81,15 +89,26 @@
                     <div class="col-sm-6">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-end p-0 m-0">
-                                <li class="page-item ">
-                                    <a class="page-link text-dark" href="#" tabindex="-1"
-                                       aria-disabled="true">Previous</a>
-                                </li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">1</a></li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">2</a></li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">3</a></li>
                                 <li class="page-item text-dark">
-                                    <a class="page-link text-dark" href="#">Next</a>
+                                    <a class="page-link text-dark" th:href="@{'/brand/page/' + ${currentPage - 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage > 1}">
+                                        Previous
+                                    </a>
+                                    <span class="page-link text-dark" th:unless="${currentPage > 1}">Previous</span>
+                                </li>
+                                <li class="page-item text-dark" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                    <a class="page-link text-dark"
+                                       th:href="@{'/brand/page/' + ${i} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage != i}">[[${i}]]</a>
+                                    <span class="page-link text-primary" th:unless="${currentPage != i}">[[${i}]]</span>
+                                </li>
+
+                                <li class="page-item text-dark">
+                                    <a class="page-link text-dark" th:href="@{'/brand/page/' + ${currentPage + 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage < totalPages}">
+                                        Next
+                                    </a>
+                                    <span class="page-link text-dark" th:unless="${currentPage < totalPages}">Next</span>
                                 </li>
                             </ul>
                         </nav>

@@ -5,6 +5,10 @@ import com.avdbearing.dto.BrandCreateDto;
 import com.avdbearing.dto.BrandDto;
 import com.avdbearing.mappers.BusinessMapper;
 import com.avdbearing.repositories.BrandRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +37,7 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.save(brand);
 
         return businessMapper.convertToBrandDto(brand);
+
     }
 
     @Override
@@ -68,6 +73,27 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.save(entityBrand);
 
 
+    }
+
+
+
+    @Override
+    public void save(Brand brand) {
+        brandRepository.save(brand);
+    }
+
+    @Override
+    public long getTotal() {
+
+        return brandRepository.count();
+    }
+
+    @Override
+    public Page<Brand> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        return brandRepository.findAll(pageable);
     }
 
 }
