@@ -100,7 +100,6 @@ public class BusinessMapper {
     public User convertToUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
-//        user.setContact(convertToContact(userDto.getContact()));
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setUserRole(userDto.getUserRole());
@@ -136,7 +135,7 @@ public class BusinessMapper {
         PartDto partDto = new PartDto();
         partDto.setId(part.getId());
         partDto.setSizeDto(convertToSizeDto(part.getSize()));
-        partDto.setBrandDto(convertToBrandDto(part.getBrand()));
+        partDto.setBrand(part.getBrand().getBrandName());
         partDto.setArticle(part.getArticle());
 
         partDto.setAmount(part.getAmount());
@@ -153,6 +152,7 @@ public class BusinessMapper {
 
     public Part convertToPart(PartDto partDto) {
         Supplier supplier = supplierRepository.findByCompanyNameEquals(partDto.getSupplier());
+        Brand brand = brandRepository.findBrandByBrandName(partDto.getBrand());
         System.out.println(supplier);
 
 
@@ -160,7 +160,7 @@ public class BusinessMapper {
         part.setId(partDto.getId());
         part.setSize(convertToSize(partDto.getSizeDto()));
         part.setArticle(partDto.getArticle());
-        part.setBrand(convertToBrand(partDto.getBrandDto()));
+        part.setBrand(brand);
         part.setAmount(partDto.getAmount());
         part.setDescription(partDto.getDescription());
         part.setPrice(partDto.getPrice());
@@ -207,21 +207,22 @@ public class BusinessMapper {
     }
 
     public Part convertToPartEntity(PartCreateDto partCreateDto) {
+        Brand brand = brandRepository.findBrandByBrandName(partCreateDto.getBrandName());
 
-        Part findedPart = partRepository.findByBrandAndArticle(partCreateDto.getBrandName(), partCreateDto.getArticle());
-        Brand findedBrand = brandRepository.findBrandByBrandName(partCreateDto.getBrandName());
+        Part findedPart = partRepository.findByBrandAndArticle(brand, partCreateDto.getArticle());
         Supplier supplier = supplierRepository.findByCompanyNameEquals(partCreateDto.getSupplierName());
         Size findedSize = sizeRepository.findByInnerAndOuterAndWidth(partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
 
         if (findedSize == null) {
             findedSize = new Size(0, partCreateDto.getInner(), partCreateDto.getOuter(), partCreateDto.getWidth());
         }
+
         if (findedPart == null) {
             findedPart = new Part();
         }
 
         findedPart.setArticle(partCreateDto.getArticle());
-        findedPart.setBrand(findedBrand);
+        findedPart.setBrand(brand);
         findedPart.setDescription(partCreateDto.getDescription());
         findedPart.setAmount(partCreateDto.getAmount());
         findedPart.setPrice(partCreateDto.getPrice());
@@ -255,9 +256,7 @@ public class BusinessMapper {
             findedUser = new User();
             findedUser.setEmail(userCreateDto.getEmail());
             findedUser.setPassword(userCreateDto.getPassword());
-//            findedUser.setContact(contact);
-//            findedUser.getContact().setAddress(address);
-//            findedUser.setUserStatus(UserStatus.valueOf(userCreateDto.getType()));
+            findedUser.setUserStatus(UserStatus.valueOf(userCreateDto.getUserStatus()));
             findedUser.setUserRole(UserRole.valueOf(userCreateDto.getUserRole()));
         }
         return findedUser;
@@ -506,7 +505,6 @@ public class BusinessMapper {
 
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-//        userDto.setContact(convertToContactDto(user.getContact()));
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setUserRole(user.getUserRole());

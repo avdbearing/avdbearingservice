@@ -50,17 +50,17 @@
                 <thead>
                 <tr>
 
-                    <th scope="col">ID</th>
-                    <th scope="col">Article</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Amount</th>
+                    <th scope="col"> <a th:href="@{ ${currentPage} + '?sort-field=id&sort-dir=' + ${reverseSortDir}}">Id</a></th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=article&sort-dir=' + ${reverseSortDir}}">Article</a></th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=brand&sort-dir=' + ${reverseSortDir}}">Brand</a></th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=amount&sort-dir=' + ${reverseSortDir}}">Amount</a></th>
                     <th scope="col">Description</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Type</th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=price&sort-dir=' + ${reverseSortDir}}">Price</a></th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=type&sort-dir=' + ${reverseSortDir}}">Type</a></th>
                     <th scope="col">Inner</th>
                     <th scope="col">Outer</th>
                     <th scope="col">Width</th>
-                    <th scope="col">Supplier</th>
+                    <th scope="col"><a th:href="@{ ${currentPage} + '?sort-field=supplier&sort-dir=' + ${reverseSortDir}}">Supplier</a></th>
                     <th scope="col">Delete</th>
                     <th scope="col">Edit</th>
 
@@ -71,15 +71,15 @@
                 <tr th:each="part: ${parts}">
                     <th scope="row" th:text="${part.id}"/>
                     <td th:text="${part.article}"/>
-                    <td th:text="${part.brandDto}"/>
+                    <td th:text="${part.brand.brandName}"/>
                     <td th:text="${part.amount}"/>
                     <td th:text="${part.description}"/>
                     <td th:text="${part.price}"/>
                     <td th:text="${part.type}"/>
-                    <td th:text="${part.sizeDto.inner}"/>
-                    <td th:text="${part.sizeDto.outer}"/>
-                    <td th:text="${part.sizeDto.width}"/>
-                    <td th:text="${part.supplier}"/>
+                    <td th:text="${part.size.inner}"/>
+                    <td th:text="${part.size.outer}"/>
+                    <td th:text="${part.size.width}"/>
+                    <td th:text="${part.supplier.companyName}"/>
 
                     <td><a th:href="@{/part/delete/{id}(id=${part.getId()})}" class="btn btn-danger">Delete</a></td>
                     <td><a th:href="@{/part/update/{id}(id=${part.getId()})}" class="btn btn-warning">Update</a></td>
@@ -97,16 +97,25 @@
                     </div>
                     <div class="col-sm-6">
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item ">
-                                    <a class="page-link text-dark" href="#" tabindex="-1"
-                                       aria-disabled="true">Previous</a>
+                            <ul class="pagination justify-content-end p-0 m-0">
+                                    <a class="page-link text-dark" th:href="@{'/part/page/' + ${currentPage - 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage > 1}">
+                                        Previous
+                                    </a>
+                                    <span class="page-link text-dark" th:unless="${currentPage > 1}">Previous</span>
                                 </li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">1</a></li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">2</a></li>
-                                <li class="page-item text-dark"><a class="page-link text-dark" href="#">3</a></li>
+                                <li class="page-item text-dark" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                    <a class="page-link text-dark"
+                                       th:href="@{'/part/page/' + ${i} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage != i}">[[${i}]]</a>
+                                    <span class="page-link text-primary" th:unless="${currentPage != i}">[[${i}]]</span>
+                                </li>
                                 <li class="page-item text-dark">
-                                    <a class="page-link text-dark" href="#">Next</a>
+                                    <a class="page-link text-dark" th:href="@{'/part/page/' + ${currentPage + 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
+                                       th:if="${currentPage < totalPages}">
+                                        Next
+                                    </a>
+                                    <span class="page-link text-dark" th:unless="${currentPage < totalPages}">Next</span>
                                 </li>
                             </ul>
                         </nav>
@@ -117,185 +126,6 @@
     </div>
 </div>
 
-<div id="editModal" class="modal fade" style="display: none" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Part</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Article</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Brand</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Type</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Inner</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Outer</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Width</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Supplier ID</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div id="deleteModal" class="modal fade" style="display: none" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Part</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
-
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Enter Article</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
-
-
-                    <input type="submit" class="btn btn-danger" value="delete part">
-                </div>
-            </form>
-
-        </div>
-
-    </div>
-</div>
-<div id="addModal" class="modal fade" style="display:none" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form th:action="@{/part/create}" method="post" th:object="${newPart}">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Part</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
-
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Article</label>
-                            <input th:field="*{article}" type="text" name="article" class="form-control" required
-                                   placeholder="Enter article">
-                        </div>
-                        <div class="form-group">
-                            <label>Brand</label>
-                            <input th:field="*{brandName}" type="text" name="brand" class="form-control" required
-                                   placeholder="Enter brand" name="brand_id">
-                            <option value="none">choose brand</option>
-
-                            <option th:each="brand:${brands}" th:value="${brand.brandName}"
-                                    th:text="${brand.brandName}"></option>
-
-                        </div>
-                        <div class="form-group">
-                            <label>Amount</label>
-                            <input th:field="*{amount}" type="text" name="quantity" class="form-control" required
-                                   placeholder="Enter amount">
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input th:field="*{description}" type="text" name="description" class="form-control"
-                                   required placeholder="Enter description">
-                        </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <input th:field="*{price}" type="text" name="price" class="form-control" required
-                                   placeholder="Enter price">
-                        </div>
-                        <div class="form-group">
-                            <label>Type</label>
-                            <!--                            <input th:field="*{type}" type="text" name="type" class="form-control" required placeholder="Enter type">-->
-                            <select th:field="*{type}" class="form-select form-select-sm" name="supplier_id"
-                                    aria-label=".form-select-sm example">
-                                <option value="none">choose type</option>
-
-                                <option th:each="type:${partTypes}" th:value="${type.name()}"
-                                        th:text="${type.name()}"></option>
-
-
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Inner</label>
-                            <input th:field="*{inner}" type="text" name="iner" class="form-control"
-                                   required placeholder="Enter inner size">
-                        </div>
-                        <div class="form-group">
-                            <label>Outer</label>
-                            <input th:field="*{outer}" type="text" name="outer" class="form-control"
-                                   required placeholder="Enter outer size">
-                        </div>
-                        <div class="form-group">
-                            <label>Width</label>
-                            <input th:field="*{width}" type="text" name="width" class="form-control"
-                                   required placeholder="Enter width size">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Supplier company</label>
-                            <select th:field="*{supplierName}" class="form-select form-select-sm" name="supplier_id"
-                                    aria-label=".form-select-sm example">
-                                <option value="none">choose supplier</option>
-
-                                <option th:each="supplier:${suppliers}" th:value="${supplier.companyName}"
-                                        th:text="${supplier.companyName}"></option>
-
-
-                            </select>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-danger" data-bs-dismiss="modal" value="close">
-                    <button type="submit" class="btn btn-success">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"

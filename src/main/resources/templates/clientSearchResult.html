@@ -54,14 +54,14 @@
                             </i>
                         </a>
 
-<!--                        <a href="#deleteModal" class="delete" data-bs-toggle="modal">-->
-<!--                            <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="delete">-->
-<!--                                <button type="button" class="btn btn-danger " data-bs-toggle="modal"-->
-<!--                                        data-bs-target="#deleteModal"-->
-<!--                                >Delete Client-->
-<!--                                </button>-->
-<!--                            </i>-->
-<!--                        </a>-->
+                        <a href="#deleteModal" class="delete" data-bs-toggle="modal">
+                            <i class="icon" data-bs-toggle="tooltip" title data-original-tittle="delete">
+                                <button type="button" class="btn btn-danger " data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                >Delete Client
+                                </button>
+                            </i>
+                        </a>
 
 
                     </div>
@@ -116,46 +116,6 @@
 
                 </tbody>
             </table>
-            <div class="page-link bg-secondary text-white  rounded-2  ">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="clearfix text-md-start mt-1">
-                            show <b>1</b> page <b>out of 25</b>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
-                                <div class="col-sm-6">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-end p-0 m-0">
-                                            <a class="page-link text-dark" th:href="@{'/client/page/' + ${currentPage - 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
-                                               th:if="${currentPage > 1}">
-                                                Previous
-                                            </a>
-                                            <span class="page-link text-dark" th:unless="${currentPage > 1}">Previous</span>
-                                            </li>
-                                            <li class="page-item text-dark" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                                <a class="page-link text-dark"
-                                                   th:href="@{'/client/page/' + ${i} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
-                                                   th:if="${currentPage != i}">[[${i}]]</a>
-                                                <span class="page-link text-primary" th:unless="${currentPage != i}">[[${i}]]</span>
-                                            </li>
-                                            <li class="page-item text-dark">
-                                                <a class="page-link text-dark" th:href="@{'/client/page/' + ${currentPage + 1} + '?sort-field=' + ${sortField} + '&sort-dir=' + ${sortDir}}"
-                                                   th:if="${currentPage < totalPages}">
-                                                    Next
-                                                </a>
-                                                <span class="page-link text-dark" th:unless="${currentPage < totalPages}">Next</span>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

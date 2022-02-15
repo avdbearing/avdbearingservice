@@ -29,6 +29,9 @@ public class Part {
     private String article;
 
 
+//    @OneToOne
+//    private Part analogFor;
+
     @OneToOne
     private Brand brand;
 
@@ -41,7 +44,7 @@ public class Part {
     @Enumerated(EnumType.STRING)
     private PartType type;
     @OneToOne
-    private Supplier supplier;
+    private Supplier supplier; //fixme argue!!!
     @Column(nullable = false)
     private boolean isNew;
 

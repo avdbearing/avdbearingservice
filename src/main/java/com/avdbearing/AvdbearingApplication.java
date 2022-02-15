@@ -4,6 +4,9 @@ import com.avdbearing.domain.Address;
 import com.avdbearing.domain.Contact;
 import com.avdbearing.domain.Enum.ContactType;
 import com.avdbearing.domain.Enum.PartType;
+import com.avdbearing.domain.Enum.UserRole;
+import com.avdbearing.domain.Enum.UserStatus;
+import com.avdbearing.domain.User;
 import com.avdbearing.domain.core.Brand;
 import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Size;
@@ -22,8 +25,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
 
-
-
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
@@ -36,7 +37,6 @@ public class AvdbearingApplication {
     }
 
 }
-
 
 
 @Component
@@ -59,6 +59,8 @@ class AppStartupRunner implements ApplicationRunner {
     BrandService brandService;
     @Resource
     BrandRepository brandRepository;
+    @Resource
+    UserRepository userRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -69,9 +71,9 @@ class AppStartupRunner implements ApplicationRunner {
         sizeRepository.save(firstSize);
         sizeRepository.save(secondSize);
 
-        Brand brand1 = new Brand(1,"SNR",LocalDateTime.now(), LocalDateTime.now());
+        Brand brand1 = new Brand(1, "SNR", LocalDateTime.now(), LocalDateTime.now());
         brandRepository.save(brand1);
-        Brand brand2 = new Brand(2,"NSK",LocalDateTime.now(), LocalDateTime.now());
+        Brand brand2 = new Brand(2, "NSK", LocalDateTime.now(), LocalDateTime.now());
         brandRepository.save(brand2);
 
         Address address = new Address(1, "poland", "krakov", "krakovska", 4,
@@ -105,6 +107,15 @@ class AppStartupRunner implements ApplicationRunner {
                 12, PartType.OILSEAL, supplier1, true, LocalDateTime.now(), LocalDateTime.now());
 
         partRepository.save(part1);
+
+
+
+        User user1 = new User(1, "yarik@gmil.com", "qwerty", UserRole.MANAGER, UserStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user1);
+        User user2 = new User(2, "lelik@gmail.com", "1234554321", UserRole.ADMIN, UserStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+        userRepository.save(user2);
+
+
 
         clientService.addClient(new ClientCreateDto("serg", "serg", "+32423423423", "CLIENT", "ukraine", "kiev",
                 "kievska", 5, "serg@", "qwerty", "CLIENT", "NEW"));

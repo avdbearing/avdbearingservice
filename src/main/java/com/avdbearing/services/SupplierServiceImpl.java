@@ -1,11 +1,16 @@
 package com.avdbearing.services;
 
 
+import com.avdbearing.domain.core.Part;
 import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.SupplierCreateDto;
 import com.avdbearing.dto.SupplierDto;
 import com.avdbearing.mappers.BusinessMapper;
 import com.avdbearing.repositories.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +81,23 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     }
+    @Override
+    public void save(Supplier supplier) {
+        supplierRepository.save(supplier);
+    }
+
+    @Override
+    public long getTotal() {
+
+        return supplierRepository.count();
+    }
+
+    @Override
+    public Page<Supplier> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        return supplierRepository.findAll(pageable);
+    }
+
 }

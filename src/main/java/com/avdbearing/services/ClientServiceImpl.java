@@ -1,6 +1,7 @@
 package com.avdbearing.services;
 
 import com.avdbearing.domain.Client;
+import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.ClientCreateDto;
 import com.avdbearing.dto.ClientDto;
 import com.avdbearing.mappers.BusinessMapper;
@@ -9,6 +10,10 @@ import com.avdbearing.repositories.ClientRepository;
 import com.avdbearing.repositories.ContactRepository;
 import com.avdbearing.repositories.UserRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
@@ -84,4 +89,23 @@ public class ClientServiceImpl implements ClientService {
         List<Client> clients = clientRepository.findAll();
         return businessMapper.convertToClientListDto(clients);
     }
+    @Override
+    public void save(Client client) {
+        clientRepository.save(client);
+    }
+
+    @Override
+    public long getTotal() {
+
+        return clientRepository.count();
+    }
+
+    @Override
+    public Page<Client> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        return clientRepository.findAll(pageable);
+    }
+
 }

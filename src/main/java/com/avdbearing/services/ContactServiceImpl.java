@@ -1,11 +1,16 @@
 package com.avdbearing.services;
 
 import com.avdbearing.domain.Contact;
+import com.avdbearing.domain.core.Supplier;
 import com.avdbearing.dto.ContactCreateDto;
 import com.avdbearing.dto.ContactDto;
 import com.avdbearing.mappers.BusinessMapper;
 import com.avdbearing.repositories.AddressRepository;
 import com.avdbearing.repositories.ContactRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,8 +27,7 @@ public class ContactServiceImpl implements ContactService {
     @Resource
     private ContactRepository contactRepository;
 
-    public ContactServiceImpl() {
-    }
+
 
 
     @Override
@@ -73,5 +77,23 @@ public class ContactServiceImpl implements ContactService {
         List<Contact> contacts = contactRepository.findAll();
 
         return businessMapper.convertToContactListDto(contacts);
+    }
+    @Override
+    public void save(Contact contact  ) {
+        contactRepository.save(contact);
+    }
+
+    @Override
+    public long getTotal() {
+
+        return contactRepository.count();
+    }
+
+    @Override
+    public Page<Contact> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        return contactRepository.findAll(pageable);
     }
 }
